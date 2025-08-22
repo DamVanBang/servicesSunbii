@@ -58,124 +58,104 @@
     </footer>
 
     <script>
-        const searchButton = document.getElementById('searchButton');
-        const searchInput = document.getElementById('searchInput');
-        const resultDiv = document.getElementById('result');
+    const searchButton = document.getElementById('searchButton');
+    const searchInput = document.getElementById('searchInput');
+    const resultDiv = document.getElementById('result');
 
-        // Hàm xử lý tra cứu khi nhấn nút
-        const handleSearch = async () => {
-            const keyword = searchInput.value.trim();
-            
-            // Xóa kết quả cũ và hiển thị trạng thái đang tải
-            resultDiv.innerHTML = '';
-            resultDiv.className = 'lookup-result';
+    // Hàm xử lý tra cứu khi nhấn nút
+    const handleSearch = async () => {
+        const keyword = searchInput.value.trim();
 
-            if (keyword === '') {
-                resultDiv.className = 'lookup-result error';
-                resultDiv.innerHTML = '<p>Vui lòng nhập thông tin cần tra cứu.</p>';
-                return;
-            }
+        // Xóa kết quả cũ
+        resultDiv.innerHTML = '';
+        resultDiv.className = 'lookup-result';
 
-            // Hiển thị trạng thái đang tìm kiếm...
-            searchButton.disabled = true;
-            searchButton.innerHTML = '<i class="fas fa-spinner fa-spin"></i> ĐANG TÌM KIẾM...';
-
-            // Cấu hình API
-            const apiKey = 'DVB';
-            const type = 'auto'; // 'auto' để API tự động tìm theo nhiều trường
-            const apiUrl = `https://4aececcc-3bc2-428b-959a-9370ab9a3b06-00-2bl0p33mimkiq.riker.replit.dev/api/servicesCheck?apikey=${apiKey}&type=${type}&keyword=${keyword}`;
-
-            try {
-    const response = await fetch(apiUrl);
-    const data = await response.json();
-
-    // Nếu API trả về lỗi
-    if (data.message) {
-        resultDiv.className = 'lookup-result error';
-        resultDiv.innerHTML = `<p>${data.message}</p>`;
-    } else {
-        resultDiv.className = 'lookup-result success';
-
-        // Hàm render 1 kết quả
-        function renderItem(item) {
-  // lấy thông tin contact nếu có
-  const phone = item.contact && item.contact.phone ? item.contact.phone : '';
-  const email = item.contact && item.contact.email ? item.contact.email : '';
-  const facebook = item.contact && item.contact.facebook ? item.contact.facebook : '';
-
-  // check ngày hết hạn
-  let statusHtml = '';
-  if (item.endDate) {
-    const parts = item.endDate.split('/');
-    if (parts.length === 3) {
-      const endDate = new Date(parts[2], parts[1] - 1, parts[0]);
-      const today = new Date();
-      const status = endDate >= today ? 'Còn bảo hành' : 'Hết hạn bảo hành';
-      const statusClass = endDate >= today ? 'status-active' : 'status-expired';
-      statusHtml = `<p><strong>Tình trạng:</strong> <span class="${statusClass}">${status}</span></p>`;
-    }
-  }
-
-            return `
-                <div class="result-card">
-                    <h3>Thông Tin Bảo Hành</h3>
-                    <p><strong>Khách hàng:</strong> ${item.Name || 'Không rõ'}</p>
-                    <p><strong>Mã dịch vụ:</strong> ${item.servicesCode || 'Không có'}</p>
-                    <p><strong>Ngày kích hoạt:</strong> ${item.date || 'Không có'}</p>
-                    <p><strong>Ngày hết hạn:</strong> ${item.endDate || 'Không có'}</p>
-                    <p><strong>Thời hạn (tháng):</strong> ${item.duration || 'Không rõ'}</p>
-                    <p><strong>Địa chỉ:</strong> ${item.contact?.address || 'Không có'}</p>
-                    <p><strong>Điện thoại:</strong> ${item.contact?.phone || 'Không có'}</p>
-                    <p><strong>Email:</strong> ${item.contact?.email || 'Không có'}</p>
-                    <p><strong>Facebook:</strong> ${item.contact?.facebook || 'Không có'}</p>
-                    ${statusHtml}
-                </div>
-            `;
-        };
-    }
-        // Nếu trả về mảng nhiều kết quả
-        if (Array.isArray(data)) {
-            resultDiv.innerHTML = data.map(renderItem).join('');
-        } else {
-            // Nếu chỉ là 1 object
-            resultDiv.innerHTML = renderItem(data);
+        if (keyword === '') {
+            resultDiv.className = 'lookup-result error';
+            resultDiv.innerHTML = '<p>Vui lòng nhập thông tin cần tra cứu.</p>';
+            return;
         }
-    }
-}
 
+        // Hiển thị trạng thái đang tìm kiếm
+        searchButton.disabled = true;
+        searchButton.innerHTML = '<i class="fas fa-spinner fa-spin"></i> ĐANG TÌM KIẾM...';
 
+        // Cấu hình API
+        const apiKey = 'DVB';
+        const type = 'auto';
+        const apiUrl = `https://4aececcc-3bc2-428b-959a-9370ab9a3b06-00-2bl0p33mimkiq.riker.replit.dev/api/servicesCheck?apikey=${apiKey}&type=${type}&keyword=${keyword}`;
 
-        // Nếu trả về mảng nhiều kết quả
-        if (Array.isArray(data)) {
-            resultDiv.innerHTML = data.map(renderItem).join('');
-        } else {
-            // Nếu chỉ là 1 object
-            resultDiv.innerHTML = renderItem(data);
-        }
-    }
-}
- catch (error) {
-                // Xử lý lỗi nếu không kết nối được tới API
+        try {
+            const response = await fetch(apiUrl);
+            const data = await response.json();
+
+            // Nếu API trả về lỗi
+            if (data.message) {
                 resultDiv.className = 'lookup-result error';
-                resultDiv.innerHTML = '<p>Có lỗi xảy ra khi kết nối tới máy chủ. Vui lòng thử lại sau.</p>';
-                console.error('Fetch Error:', error);
-            } finally {
-                // Khôi phục lại trạng thái ban đầu của nút bấm
-                searchButton.disabled = false;
-                searchButton.innerHTML = 'KIỂM TRA NGAY';
-            }
-        };
+                resultDiv.innerHTML = `<p>${data.message}</p>`;
+            } else {
+                resultDiv.className = 'lookup-result success';
 
-        // Gán sự kiện cho nút bấm
-        searchButton.addEventListener('click', handleSearch);
+                // Hàm render 1 kết quả
+                function renderItem(item) {
+                    let statusHtml = '';
+                    if (item.endDate) {
+                        const parts = item.endDate.split('/');
+                        if (parts.length === 3) {
+                            const endDate = new Date(parts[2], parts[1] - 1, parts[0]);
+                            const today = new Date();
+                            const status = endDate >= today ? 'Còn bảo hành' : 'Hết hạn bảo hành';
+                            const statusClass = endDate >= today ? 'status-active' : 'status-expired';
+                            statusHtml = `<p><strong>Tình trạng:</strong> <span class="${statusClass}">${status}</span></p>`;
+                        }
+                    }
 
-        // Cho phép nhấn Enter để tìm kiếm
-        searchInput.addEventListener('keyup', (event) => {
-            if (event.key === 'Enter') {
-                handleSearch();
+                    return `
+                        <div class="result-card">
+                            <h3>Thông Tin Bảo Hành</h3>
+                            <p><strong>Khách hàng:</strong> ${item.Name || 'Không rõ'}</p>
+                            <p><strong>Mã dịch vụ:</strong> ${item.servicesCode || 'Không có'}</p>
+                            <p><strong>Ngày kích hoạt:</strong> ${item.date || 'Không có'}</p>
+                            <p><strong>Ngày hết hạn:</strong> ${item.endDate || 'Không có'}</p>
+                            <p><strong>Thời hạn (tháng):</strong> ${item.duration || 'Không rõ'}</p>
+                            <p><strong>Địa chỉ:</strong> ${item.contact?.address || 'Không có'}</p>
+                            <p><strong>Điện thoại:</strong> ${item.contact?.phone || 'Không có'}</p>
+                            <p><strong>Email:</strong> ${item.contact?.email || 'Không có'}</p>
+                            <p><strong>Facebook:</strong> ${item.contact?.facebook || 'Không có'}</p>
+                            ${statusHtml}
+                        </div>
+                    `;
+                }
+
+                // Nếu trả về nhiều kết quả
+                if (Array.isArray(data)) {
+                    resultDiv.innerHTML = data.map(renderItem).join('');
+                } else {
+                    // Nếu chỉ trả về 1 object
+                    resultDiv.innerHTML = renderItem(data);
+                }
             }
-        });
-    </script>
+        } catch (error) {
+            resultDiv.className = 'lookup-result error';
+            resultDiv.innerHTML = '<p>Có lỗi xảy ra khi kết nối tới máy chủ. Vui lòng thử lại sau.</p>';
+            console.error('Fetch Error:', error);
+        } finally {
+            searchButton.disabled = false;
+            searchButton.innerHTML = 'KIỂM TRA NGAY';
+        }
+    };
+
+    // Gán sự kiện cho nút bấm
+    searchButton.addEventListener('click', handleSearch);
+
+    // Cho phép nhấn Enter để tìm kiếm
+    searchInput.addEventListener('keyup', (event) => {
+        if (event.key === 'Enter') {
+            handleSearch();
+        }
+    });
+</script>
+
     
     <style>
         .status-active {
