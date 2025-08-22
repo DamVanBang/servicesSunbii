@@ -86,38 +86,56 @@
             const apiUrl = `https://4aececcc-3bc2-428b-959a-9370ab9a3b06-00-2bl0p33mimkiq.riker.replit.dev/api/servicesCheck?apikey=${apiKey}&type=${type}&keyword=${keyword}`;
 
             try {
-                const response = await fetch(apiUrl);
-                const data = await response.json();
+    const response = await fetch(apiUrl);
+    const data = await response.json();
 
-                // Kiểm tra xem API có trả về thông báo lỗi không
-                if (data.message) {
-                    resultDiv.className = 'lookup-result error';
-                    resultDiv.innerHTML = `<p>${data.message}</p>`;
-                } else {
-                    // Nếu có dữ liệu, hiển thị kết quả
-                    resultDiv.className = 'lookup-result success';
-                    
-                    // Tính toán trạng thái bảo hành
-                    // Chuyển đổi ngày hết hạn từ dd/mm/yyyy sang đối tượng Date
-                    const parts = data.endDate.split('/');
-                    const endDate = new Date(parts[2], parts[1] - 1, parts[0]);
-                    const today = new Date();
-                    
-                    const status = endDate >= today ? 'Còn bảo hành' : 'Hết hạn bảo hành';
-                    const statusClass = endDate >= today ? 'status-active' : 'status-expired';
+    // Nếu API trả về lỗi
+    if (data.message) {
+        resultDiv.className = 'lookup-result error';
+        resultDiv.innerHTML = `<p>${data.message}</p>`;
+    } else {
+        resultDiv.className = 'lookup-result success';
 
-                    let html = `<h3>Thông Tin Bảo Hành</h3>
-                                <p><strong>Khách hàng:</strong> ${data.Name}</p>
-                                <p><strong>Mã dịch vụ:</strong> ${data.servicesCode}</p>
-                                <p><strong>Ngày kích hoạt:</strong> ${data.date}</p>
-                                <p><strong>Ngày hết hạn:</strong> ${data.endDate}</p>
-                                <p><strong>Thời hạn (tháng):</strong> ${data.duration}</p>
-                                <p><strong>Địa chỉ:</strong> ${data.contact.address || 'Không có'}</p>
-                                <p><strong>Tình trạng:</strong> <span class="${statusClass}">${status}</span></p>`;
-                    resultDiv.innerHTML = html;
-                }
+        // Hàm render 1 kết quả
+        const renderItem = (item) => {
+            // Nếu có ngày hết hạn → tính trạng thái
+            let statusHtml = '';
+            if (item.endDate) {
+                const parts = item.endDate.split('/');
+                const endDate = new Date(parts[2], parts[1] - 1, parts[0]);
+                const today = new Date();
+                const status = endDate >= today ? 'Còn bảo hành' : 'Hết hạn bảo hành';
+                const statusClass = endDate >= today ? 'status-active' : 'status-expired';
+                statusHtml = `<p><strong>Tình trạng:</strong> <span class="${statusClass}">${status}</span></p>`;
+            }
 
-            } catch (error) {
+            return `
+                <div class="result-card">
+                    <h3>Thông Tin Bảo Hành</h3>
+                    <p><strong>Khách hàng:</strong> ${item.Name || 'Không rõ'}</p>
+                    <p><strong>Mã dịch vụ:</strong> ${item.servicesCode || 'Không có'}</p>
+                    <p><strong>Ngày kích hoạt:</strong> ${item.date || 'Không có'}</p>
+                    <p><strong>Ngày hết hạn:</strong> ${item.endDate || 'Không có'}</p>
+                    <p><strong>Thời hạn (tháng):</strong> ${item.duration || 'Không rõ'}</p>
+                    <p><strong>Địa chỉ:</strong> ${item.contact?.address || 'Không có'}</p>
+                    <p><strong>Điện thoại:</strong> ${item.contact?.phone || 'Không có'}</p>
+                    <p><strong>Email:</strong> ${item.contact?.email || 'Không có'}</p>
+                    <p><strong>Facebook:</strong> ${item.contact?.facebook || 'Không có'}</p>
+                    ${statusHtml}
+                </div>
+            `;
+        };
+
+        // Nếu trả về mảng nhiều kết quả
+        if (Array.isArray(data)) {
+            resultDiv.innerHTML = data.map(renderItem).join('');
+        } else {
+            // Nếu chỉ là 1 object
+            resultDiv.innerHTML = renderItem(data);
+        }
+    }
+}
+ catch (error) {
                 // Xử lý lỗi nếu không kết nối được tới API
                 resultDiv.className = 'lookup-result error';
                 resultDiv.innerHTML = '<p>Có lỗi xảy ra khi kết nối tới máy chủ. Vui lòng thử lại sau.</p>';
