@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Tra Cứu Bảo Hành - SUNBII Services</title>
+    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+</head>
+<body>
+
+    <header class="header">
+        <div class="container">
+            <div class="logo">
+                <a href="index.html">SUNBII <span>Services</span></a>
+            </div>
+            <nav class="main-nav">
+                <ul>
+                    <li><a href="index.html">Trang Chủ</a></li>
+                    <li><a href="tra-cuu.html" class="active">Tra Cứu Bảo Hành</a></li>
+                    <li><a href="#">Dịch Vụ</a></li>
+                    <li><a href="#">Liên Hệ</a></li>
+                </ul>
+            </nav>
+        </div>
+    </header>
+
+    <main class="main-content">
+        <div class="container page-container">
+            <div class="lookup-card">
+                <div class="lookup-header">
+                    <i class="fas fa-shield-alt"></i>
+                    <h1>TRA CỨU THÔNG TIN BẢO HÀNH</h1>
+                    <p>Vui lòng nhập số điện thoại hoặc mã IMEI/Serial để kiểm tra</p>
+                </div>
+                <div class="lookup-form">
+                    <div class="input-group">
+                        <i class="fas fa-search"></i>
+                        <input type="text" id="searchInput" placeholder="Nhập SĐT hoặc IMEI/Serial..." required>
+                    </div>
+                    <button id="searchButton">KIỂM TRA NGAY</button>
+                </div>
+                <div id="result" class="lookup-result">
+                    </div>
+            </div>
+        </div>
+    </main>
+
+    <footer class="footer">
+        <div class="container">
+            <p>&copy; 2025 SUNBII Services. All rights reserved.</p>
+            <div class="social-links">
+                <a href="#"><i class="fab fa-facebook-f"></i></a>
+                <a href="#"><i class="fab fa-instagram"></i></a>
+                <a href="#"><i class="fab fa-youtube"></i></a>
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        document.getElementById('searchButton').addEventListener('click', function() {
+            const searchInput = document.getElementById('searchInput').value.trim();
+            const resultDiv = document.getElementById('result');
+
+            // Dữ liệu bảo hành giả để demo
+            const warrantyData = {
+                '0987654321': {
+                    product: 'iPhone 15 Pro Max',
+                    imei: '358812345678901',
+                    purchaseDate: '20/10/2024',
+                    expiryDate: '20/10/2025',
+                    status: 'Còn bảo hành'
+                },
+                '123456789': {
+                    product: 'Laptop Dell XPS 15',
+                    serial: 'XYZ123ABC',
+                    purchaseDate: '15/01/2023',
+                    expiryDate: '15/01/2024',
+                    status: 'Hết hạn bảo hành'
+                }
+            };
+
+            resultDiv.innerHTML = '';
+            resultDiv.className = 'lookup-result';
+
+            if (searchInput === '') {
+                resultDiv.className = 'lookup-result error';
+                resultDiv.innerHTML = '<p>Vui lòng nhập thông tin cần tra cứu.</p>';
+                return;
+            }
+
+            const data = warrantyData[searchInput];
+
+            if (data) {
+                resultDiv.className = 'lookup-result success';
+                let html = `<h3>Thông Tin Bảo Hành</h3>
+                            <p><strong>Sản phẩm:</strong> ${data.product}</p>
+                            <p><strong>IMEI/Serial:</strong> ${data.imei || data.serial}</p>
+                            <p><strong>Ngày mua hàng:</strong> ${data.purchaseDate}</p>
+                            <p><strong>Ngày hết hạn:</strong> ${data.expiryDate}</p>
+                            <p><strong>Tình trạng:</strong> ${data.status}</p>`;
+                resultDiv.innerHTML = html;
+            } else {
+                resultDiv.className = 'lookup-result error';
+                resultDiv.innerHTML = '<p>Không tìm thấy thông tin bảo hành cho mã bạn đã nhập. Vui lòng kiểm tra lại.</p>';
+            }
+        });
+    </script>
+
+</body>
+</html>
