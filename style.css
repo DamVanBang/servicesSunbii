@@ -230,8 +230,6 @@ body {
 }
 
 .lookup-result.success {
-    background-color: #e8f5e9;
-    border: 1px solid #a5d6a7;
     display: block;
 }
 
