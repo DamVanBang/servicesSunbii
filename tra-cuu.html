@@ -116,18 +116,33 @@
     }
   }
 
-  return `
-    <div class="result-item">
-      <p><strong>Mã dịch vụ:</strong> ${item.servicesCode || ''}</p>
-      <p><strong>Ghi chú:</strong> ${item.note || ''}</p>
-      <p><strong>Ngày kết thúc:</strong> ${item.endDate || ''}</p>
-      ${statusHtml}
-      <p><strong>SĐT:</strong> ${phone}</p>
-      <p><strong>Email:</strong> ${email}</p>
-      <p><strong>Facebook:</strong> ${facebook}</p>
-    </div>
-  `;
+            return `
+                <div class="result-card">
+                    <h3>Thông Tin Bảo Hành</h3>
+                    <p><strong>Khách hàng:</strong> ${item.Name || 'Không rõ'}</p>
+                    <p><strong>Mã dịch vụ:</strong> ${item.servicesCode || 'Không có'}</p>
+                    <p><strong>Ngày kích hoạt:</strong> ${item.date || 'Không có'}</p>
+                    <p><strong>Ngày hết hạn:</strong> ${item.endDate || 'Không có'}</p>
+                    <p><strong>Thời hạn (tháng):</strong> ${item.duration || 'Không rõ'}</p>
+                    <p><strong>Địa chỉ:</strong> ${item.contact?.address || 'Không có'}</p>
+                    <p><strong>Điện thoại:</strong> ${item.contact?.phone || 'Không có'}</p>
+                    <p><strong>Email:</strong> ${item.contact?.email || 'Không có'}</p>
+                    <p><strong>Facebook:</strong> ${item.contact?.facebook || 'Không có'}</p>
+                    ${statusHtml}
+                </div>
+            `;
+        };
+
+        // Nếu trả về mảng nhiều kết quả
+        if (Array.isArray(data)) {
+            resultDiv.innerHTML = data.map(renderItem).join('');
+        } else {
+            // Nếu chỉ là 1 object
+            resultDiv.innerHTML = renderItem(data);
+        }
+    }
 }
+
 
 
         // Nếu trả về mảng nhiều kết quả
