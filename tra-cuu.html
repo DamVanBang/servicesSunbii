@@ -97,34 +97,38 @@
         resultDiv.className = 'lookup-result success';
 
         // Hàm render 1 kết quả
-        const renderItem = (item) => {
-            // Nếu có ngày hết hạn → tính trạng thái
-            let statusHtml = '';
-            if (item.endDate) {
-                const parts = item.endDate.split('/');
-                const endDate = new Date(parts[2], parts[1] - 1, parts[0]);
-                const today = new Date();
-                const status = endDate >= today ? 'Còn bảo hành' : 'Hết hạn bảo hành';
-                const statusClass = endDate >= today ? 'status-active' : 'status-expired';
-                statusHtml = `<p><strong>Tình trạng:</strong> <span class="${statusClass}">${status}</span></p>`;
-            }
+        function renderItem(item) {
+  // lấy thông tin contact nếu có
+  const phone = item.contact && item.contact.phone ? item.contact.phone : '';
+  const email = item.contact && item.contact.email ? item.contact.email : '';
+  const facebook = item.contact && item.contact.facebook ? item.contact.facebook : '';
 
-            return `
-                <div class="result-card">
-                    <h3>Thông Tin Bảo Hành</h3>
-                    <p><strong>Khách hàng:</strong> ${item.Name || 'Không rõ'}</p>
-                    <p><strong>Mã dịch vụ:</strong> ${item.servicesCode || 'Không có'}</p>
-                    <p><strong>Ngày kích hoạt:</strong> ${item.date || 'Không có'}</p>
-                    <p><strong>Ngày hết hạn:</strong> ${item.endDate || 'Không có'}</p>
-                    <p><strong>Thời hạn (tháng):</strong> ${item.duration || 'Không rõ'}</p>
-                    <p><strong>Địa chỉ:</strong> ${item.contact?.address || 'Không có'}</p>
-                    <p><strong>Điện thoại:</strong> ${item.contact?.phone || 'Không có'}</p>
-                    <p><strong>Email:</strong> ${item.contact?.email || 'Không có'}</p>
-                    <p><strong>Facebook:</strong> ${item.contact?.facebook || 'Không có'}</p>
-                    ${statusHtml}
-                </div>
-            `;
-        };
+  // check ngày hết hạn
+  let statusHtml = '';
+  if (item.endDate) {
+    const parts = item.endDate.split('/');
+    if (parts.length === 3) {
+      const endDate = new Date(parts[2], parts[1] - 1, parts[0]);
+      const today = new Date();
+      const status = endDate >= today ? 'Còn bảo hành' : 'Hết hạn bảo hành';
+      const statusClass = endDate >= today ? 'status-active' : 'status-expired';
+      statusHtml = `<p><strong>Tình trạng:</strong> <span class="${statusClass}">${status}</span></p>`;
+    }
+  }
+
+  return `
+    <div class="result-item">
+      <p><strong>Mã dịch vụ:</strong> ${item.servicesCode || ''}</p>
+      <p><strong>Ghi chú:</strong> ${item.note || ''}</p>
+      <p><strong>Ngày kết thúc:</strong> ${item.endDate || ''}</p>
+      ${statusHtml}
+      <p><strong>SĐT:</strong> ${phone}</p>
+      <p><strong>Email:</strong> ${email}</p>
+      <p><strong>Facebook:</strong> ${facebook}</p>
+    </div>
+  `;
+}
+
 
         // Nếu trả về mảng nhiều kết quả
         if (Array.isArray(data)) {
