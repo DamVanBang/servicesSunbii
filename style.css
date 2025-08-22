@@ -225,7 +225,6 @@ body {
 .lookup-result {
     margin-top: 30px;
     text-align: left;
-    padding: 20px;
     border-radius: 8px;
     display: none;
 }
@@ -284,7 +283,10 @@ body {
 }
 
 .result-card {
-
+    border: 1px solid #ddd;
+    border-radius: 10px;
+    padding: 15px;
     margin-bottom: 15px;
-   
+    background: #fafafa;
 }
+
