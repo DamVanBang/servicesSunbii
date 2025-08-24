@@ -58,150 +58,276 @@ body {
     color: var(--primary-color);
 }
 
-/* --- Cấu hình cho Menu Mobile (Quan trọng) --- */
-
-.mobile-menu-button {
-    display: block; /* Mặc định hiển thị nút này */
-    background: none;
-    border: none;
-    font-size: 24px;
-    color: var(--dark-color);
-    cursor: pointer;
-    z-index: 1001; /* Luôn nổi trên cùng */
-}
-
-.main-nav {
-    display: none; /* Mặc định ẩn menu */
-    position: absolute;
-    top: 72px; /* Chiều cao của header */
-    left: 0;
-    right: 0;
-    background-color: var(--white-color);
-    box-shadow: 0 5px 10px rgba(0, 0, 0, 0.1);
-}
-
-.main-nav.active {
-    display: block; /* Hiện menu khi có class 'active' */
-}
-
 .main-nav ul {
-    flex-direction: column;
+    list-style: none;
+    display: flex;
 }
 
 .main-nav ul li {
-    margin: 0;
-    text-align: center;
-    border-bottom: 1px solid var(--light-color);
-}
-.main-nav ul li:last-child {
-    border-bottom: none;
+    margin-left: 25px;
 }
 
 .main-nav a {
-    display: block;
-    padding: 15px;
     text-decoration: none;
     color: var(--dark-color);
     font-weight: 500;
-    border-bottom: none; /* Bỏ gạch chân trên mobile */
+    padding: 5px 0;
+    transition: color 0.3s ease;
 }
 
-.main-nav a:hover, .main-nav a.active {
-    background-color: var(--light-color);
+.main-nav a:hover,
+.main-nav a.active {
     color: var(--primary-color);
-    border-bottom: none;
+    border-bottom: 2px solid var(--primary-color);
 }
-
-/* --- Cấu hình cho màn hình lớn (Desktop) --- */
-@media (min-width: 768px) {
-    .mobile-menu-button {
-        display: none; /* Ẩn nút hamburger trên desktop */
-    }
-    
-    .main-nav {
-        display: block; /* Luôn hiện menu trên desktop */
-        position: static; /* Vị trí bình thường */
-        background: none;
-        box-shadow: none;
-    }
-
-    .main-nav ul {
-        flex-direction: row; /* Xếp ngang */
-    }
-
-    .main-nav ul li {
-        margin-left: 25px;
-        border: none;
-    }
-
-    .main-nav a {
-        padding: 5px 0;
-    }
-
-    .main-nav a:hover, .main-nav a.active {
-        background: none;
-        color: var(--primary-color);
-        border-bottom: 2px solid var(--primary-color);
-    }
-}
-
-
-/* --- Các Style khác giữ nguyên --- */
 
 /* Main Content */
-.main-content { flex: 1; }
+.main-content {
+    flex: 1;
+}
 
-/* Trang chủ */
+/* --- TRANG CHỦ --- */
 .hero {
-    background: linear-gradient(rgba(0,0,0,0.5), rgba(0,0,0,0.5)), url('https://images.unsplash.com/photo-1555774698-0b77e0abfe79?q=80&w=2070') center/cover no-repeat;
+    background: linear-gradient(rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.5)), url('https://images.unsplash.com/photo-1555774698-0b77e0abfe79?q=80&w=2070') center/cover no-repeat;
     color: var(--white-color);
-    padding: 80px 20px;
+    padding: 80px 0; /* Giảm padding cho mobile-first */
     text-align: center;
 }
-.hero-content h1 { font-size: 36px; margin-bottom: 20px; }
-.hero-content p { font-size: 18px; margin-bottom: 30px; }
-.hero-button { background-color: var(--primary-color); color: var(--white-color); padding: 15px 30px; text-decoration: none; border-radius: 8px; font-weight: 700; transition: background-color 0.3s ease; }
-.hero-button:hover { background-color: #e65c00; }
 
-.features { padding: 60px 0; background-color: var(--white-color); }
-.features .container { display: flex; flex-direction: column; gap: 40px; text-align: center; }
-.feature-item i { font-size: 40px; color: var(--primary-color); margin-bottom: 15px; }
-.feature-item h3 { font-size: 22px; margin-bottom: 10px; }
+.hero-content h1 {
+    font-size: 36px; /* Giảm font-size cho mobile-first */
+    margin-bottom: 20px;
+}
 
-/* Trang tra cứu */
-.page-container { display: flex; align-items: center; justify-content: center; padding: 40px 20px; }
-.lookup-card { background: var(--white-color); padding: 30px; border-radius: 10px; box-shadow: var(--box-shadow); text-align: center; max-width: 600px; width: 100%; }
-.lookup-header .fa-shield-alt { font-size: 42px; color: var(--primary-color); margin-bottom: 15px; }
-.lookup-header h1 { font-size: 24px; margin-bottom: 10px; }
-.lookup-header p { color: #777; margin-bottom: 30px; font-size: 15px; }
-.lookup-form { display: flex; flex-direction: column; gap: 15px; }
-.input-group { position: relative; }
-.input-group .fa-search { position: absolute; left: 15px; top: 50%; transform: translateY(-50%); color: #aaa; }
-#searchInput, #searchButton { font-size: 16px; padding: 15px; border-radius: 8px; }
-#searchInput { width: 100%; border: 1px solid #ddd; padding-left: 45px; }
-#searchInput:focus { outline: none; border-color: var(--primary-color); }
-#searchButton { background-color: var(--primary-color); color: var(--white-color); border: none; font-weight: 700; cursor: pointer; transition: background-color 0.3s ease; }
-#searchButton:hover { background-color: #e65c00; }
-.lookup-result { margin-top: 30px; text-align: left; border-radius: 8px; display: none; }
+.hero-content p {
+    font-size: 18px; /* Giảm font-size cho mobile-first */
+    margin-bottom: 30px;
+}
+
+.hero-button {
+    background-color: var(--primary-color);
+    color: var(--white-color);
+    padding: 15px 30px;
+    text-decoration: none;
+    border-radius: 8px;
+    font-weight: 700;
+    transition: background-color 0.3s ease;
+}
+
+.hero-button:hover {
+    background-color: #e65c00;
+}
+
+.features {
+    padding: 60px 0;
+    background-color: var(--white-color);
+}
+
+.features .container {
+    display: flex;
+    flex-direction: column; /* Chuyển sang cột trên mobile */
+    gap: 40px; /* Tăng khoảng cách khi xếp chồng */
+    text-align: center;
+}
+
+.feature-item i {
+    font-size: 40px;
+    color: var(--primary-color);
+    margin-bottom: 15px;
+}
+
+.feature-item h3 {
+    font-size: 22px;
+    margin-bottom: 10px;
+}
+
+/* --- TRANG TRA CỨU --- */
+.page-container {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 40px 20px;
+}
+
+.lookup-card {
+    background: var(--white-color);
+    padding: 30px; /* Giảm padding trên mobile */
+    border-radius: 10px;
+    box-shadow: var(--box-shadow);
+    text-align: center;
+    max-width: 600px;
+    width: 100%;
+}
+
+.lookup-header .fa-shield-alt {
+    font-size: 42px;
+    color: var(--primary-color);
+    margin-bottom: 15px;
+}
+
+.lookup-header h1 {
+    font-size: 24px;
+    margin-bottom: 10px;
+}
+
+.lookup-header p {
+    color: #777;
+    margin-bottom: 30px;
+    font-size: 15px;
+}
+
+#searchInput, #searchButton {
+    font-size: 16px;
+    padding: 15px;
+    border-radius: 8px;
+}
+
+#searchInput {
+    width: 100%;
+    border: 1px solid #ddd;
+    padding-left: 45px;
+}
+
+.input-group {
+    position: relative;
+}
+
+.input-group .fa-search {
+    position: absolute;
+    left: 15px;
+    top: 50%;
+    transform: translateY(-50%);
+    color: #aaa;
+}
+
+#searchButton {
+    background-color: var(--primary-color);
+    color: var(--white-color);
+    border: none;
+    font-weight: 700;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+
+#searchButton:hover {
+    background-color: #e65c00;
+}
+
+.lookup-result strong {
+    min-width: 120px; /* Giảm độ rộng trên mobile */
+    display: inline-block;
+}
+
+/* ... các style khác giữ nguyên ... */
+.lookup-form {
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+}
+.lookup-result {
+    margin-top: 30px;
+    text-align: left;
+    border-radius: 8px;
+    display: none;
+}
 .lookup-result.success { display: block; }
-.lookup-result.error { background-color: #ffebee; border: 1px solid #ef9a9a; color: #c62828; display: block; padding: 15px; }
+.lookup-result.error {
+    background-color: #ffebee;
+    border: 1px solid #ef9a9a;
+    color: #c62828;
+    display: block;
+    padding: 15px;
+}
 .lookup-result h3 { margin-bottom: 15px; border-bottom: 1px solid #ddd; padding-bottom: 10px; }
 .lookup-result p { margin-bottom: 10px; }
-.lookup-result strong { min-width: 120px; display: inline-block; }
+.result-card { border: 1px solid #ddd; border-radius: 10px; padding: 15px; margin-bottom: 15px; background: #fafafa; }
+
 
 /* Footer */
-.footer { background-color: var(--dark-color); color: var(--white-color); padding: 20px 0; text-align: center; }
-.footer .container { display: flex; flex-direction: column; gap: 15px; }
-.social-links a { color: var(--white-color); margin: 0 10px; font-size: 18px; transition: color 0.3s ease; }
-.social-links a:hover { color: var(--primary-color); }
+.footer {
+    background-color: var(--dark-color);
+    color: var(--white-color);
+    padding: 20px 0;
+    text-align: center;
+}
 
-/* Responsive cho desktop */
+.footer .container {
+    display: flex;
+    flex-direction: column; /* Chuyển thành cột trên mobile */
+    gap: 15px;
+}
+
+.social-links a {
+    color: var(--white-color);
+    margin: 0 10px; /* Thay margin-left thành margin 2 bên */
+    font-size: 18px;
+    transition: color 0.3s ease;
+}
+
+.social-links a:hover {
+    color: var(--primary-color);
+}
+
+
+/* ----------------------------------- */
+/* --- RESPONSIVE - MEDIA QUERIES --- */
+/* ----------------------------------- */
+
+/* Áp dụng cho màn hình từ 768px trở lên (máy tính bảng, desktop) */
 @media (min-width: 768px) {
-    .hero { padding: 120px 0; }
-    .hero-content h1 { font-size: 48px; }
-    .hero-content p { font-size: 20px; }
-    .features .container { flex-direction: row; }
-    .lookup-card { padding: 40px; }
-    .lookup-header h1 { font-size: 28px; }
-    .footer .container { flex-direction: row; justify-content: space-between; }
+    .header .container {
+        flex-direction: row; /* Quay lại hàng ngang */
+    }
+
+    /* Ẩn menu mobile và hiện menu desktop */
+    .main-nav {
+        display: block !important;
+    }
+    .mobile-menu-button {
+        display: none !important;
+    }
+
+    /* Trang chủ */
+    .hero {
+        padding: 120px 0;
+    }
+    .hero-content h1 {
+        font-size: 48px;
+    }
+    .hero-content p {
+        font-size: 20px;
+    }
+    .features .container {
+        flex-direction: row; /* Chuyển lại thành hàng ngang */
+    }
+
+    /* Trang tra cứu */
+    .lookup-card {
+        padding: 40px;
+    }
+    .lookup-header h1 {
+        font-size: 28px;
+    }
+    .lookup-header p {
+        font-size: 16px;
+    }
+
+
+    /* Footer */
+    .footer .container {
+        flex-direction: row; /* Chuyển lại thành hàng ngang */
+        justify-content: space-between;
+    }
+    .social-links a {
+        margin: 0 0 0 15px; /* Quay lại margin-left */
+    }
+}
+
+/* CSS cho menu mobile (sẽ cần thêm HTML và JS để hoạt động) */
+/* Tạm thời, ta chỉ ẩn menu trên mobile để tránh vỡ layout */
+@media (max-width: 767px) {
+    .main-nav {
+        display: none; /* Ẩn menu đi trên mobile */
+    }
+    /* Bạn có thể thêm một nút hamburger menu ở đây nếu muốn */
 }
