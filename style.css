@@ -84,33 +84,45 @@ body {
     display: block; /* Hiện menu khi có class 'active' */
 }
 
-.main-nav ul {
-    flex-direction: column;
-}
+        .main-nav ul {
+            list-style: none;
+            display: flex;
+            flex-direction: column;
+        }
 
-.main-nav ul li {
-    margin: 0;
+        .main-nav ul li {
+            margin-left: 25px;
+                margin: 0;
     text-align: center;
     border-bottom: 1px solid var(--light-color);
-}
+        }
 .main-nav ul li:last-child {
     border-bottom: none;
 }
 
-.main-nav a {
-    display: block;
+        .main-nav a {
+            text-decoration: none;
+            color: var(--dark-color);
+            font-weight: 500;
+            padding: 15px;
+            transition: color 0.3s ease;
+                display: block;
     padding: 15px;
     text-decoration: none;
     color: var(--dark-color);
     font-weight: 500;
     border-bottom: none; /* Bỏ gạch chân trên mobile */
-}
+        }
 
-.main-nav a:hover, .main-nav a.active {
-    background-color: var(--light-color);
-    color: var(--primary-color);
-    border-bottom: none;
-}
+        .main-nav a:hover,
+        .main-nav a.active {
+            color: var(--primary-color);
+            background-color: var(--light-color);
+            border-bottom: 2px solid var(--primary-color);
+        }
+
+
+
 
 /* --- Cấu hình cho màn hình lớn (Desktop) --- */
 @media (min-width: 768px) {
