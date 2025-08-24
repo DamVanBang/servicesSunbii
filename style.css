@@ -83,24 +83,24 @@ body {
 
 /* Main Content */
 .main-content {
-    flex: 1; /* Đảm bảo main content chiếm hết phần còn lại */
+    flex: 1;
 }
 
 /* --- TRANG CHỦ --- */
 .hero {
     background: linear-gradient(rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.5)), url('https://images.unsplash.com/photo-1555774698-0b77e0abfe79?q=80&w=2070') center/cover no-repeat;
     color: var(--white-color);
-    padding: 120px 0;
+    padding: 80px 0; /* Giảm padding cho mobile-first */
     text-align: center;
 }
 
 .hero-content h1 {
-    font-size: 48px;
+    font-size: 36px; /* Giảm font-size cho mobile-first */
     margin-bottom: 20px;
 }
 
 .hero-content p {
-    font-size: 20px;
+    font-size: 18px; /* Giảm font-size cho mobile-first */
     margin-bottom: 30px;
 }
 
@@ -119,14 +119,14 @@ body {
 }
 
 .features {
-    padding: 80px 0;
+    padding: 60px 0;
     background-color: var(--white-color);
 }
 
 .features .container {
     display: flex;
-    justify-content: space-around;
-    gap: 30px;
+    flex-direction: column; /* Chuyển sang cột trên mobile */
+    gap: 40px; /* Tăng khoảng cách khi xếp chồng */
     text-align: center;
 }
 
@@ -146,12 +146,12 @@ body {
     display: flex;
     align-items: center;
     justify-content: center;
-    padding: 60px 20px;
+    padding: 40px 20px;
 }
 
 .lookup-card {
     background: var(--white-color);
-    padding: 40px;
+    padding: 30px; /* Giảm padding trên mobile */
     border-radius: 10px;
     box-shadow: var(--box-shadow);
     text-align: center;
@@ -160,25 +160,32 @@ body {
 }
 
 .lookup-header .fa-shield-alt {
-    font-size: 48px;
+    font-size: 42px;
     color: var(--primary-color);
     margin-bottom: 15px;
 }
 
 .lookup-header h1 {
-    font-size: 28px;
+    font-size: 24px;
     margin-bottom: 10px;
 }
 
 .lookup-header p {
     color: #777;
     margin-bottom: 30px;
+    font-size: 15px;
 }
 
-.lookup-form {
-    display: flex;
-    flex-direction: column;
-    gap: 15px;
+#searchInput, #searchButton {
+    font-size: 16px;
+    padding: 15px;
+    border-radius: 8px;
+}
+
+#searchInput {
+    width: 100%;
+    border: 1px solid #ddd;
+    padding-left: 45px;
 }
 
 .input-group {
@@ -193,26 +200,10 @@ body {
     color: #aaa;
 }
 
-#searchInput {
-    width: 100%;
-    padding: 15px 15px 15px 45px;
-    border: 1px solid #ddd;
-    border-radius: 8px;
-    font-size: 16px;
-}
-
-#searchInput:focus {
-    outline: none;
-    border-color: var(--primary-color);
-}
-
 #searchButton {
     background-color: var(--primary-color);
     color: var(--white-color);
     border: none;
-    padding: 15px;
-    border-radius: 8px;
-    font-size: 16px;
     font-weight: 700;
     cursor: pointer;
     transition: background-color 0.3s ease;
@@ -222,38 +213,35 @@ body {
     background-color: #e65c00;
 }
 
+.lookup-result strong {
+    min-width: 120px; /* Giảm độ rộng trên mobile */
+    display: inline-block;
+}
+
+/* ... các style khác giữ nguyên ... */
+.lookup-form {
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+}
 .lookup-result {
     margin-top: 30px;
     text-align: left;
     border-radius: 8px;
     display: none;
 }
-
-.lookup-result.success {
-    display: block;
-}
-
+.lookup-result.success { display: block; }
 .lookup-result.error {
     background-color: #ffebee;
     border: 1px solid #ef9a9a;
     color: #c62828;
     display: block;
+    padding: 15px;
 }
+.lookup-result h3 { margin-bottom: 15px; border-bottom: 1px solid #ddd; padding-bottom: 10px; }
+.lookup-result p { margin-bottom: 10px; }
+.result-card { border: 1px solid #ddd; border-radius: 10px; padding: 15px; margin-bottom: 15px; background: #fafafa; }
 
-.lookup-result h3 {
-    margin-bottom: 15px;
-    border-bottom: 1px solid #ddd;
-    padding-bottom: 10px;
-}
-
-.lookup-result p {
-    margin-bottom: 10px;
-}
-
-.lookup-result strong {
-    min-width: 150px;
-    display: inline-block;
-}
 
 /* Footer */
 .footer {
@@ -265,13 +253,13 @@ body {
 
 .footer .container {
     display: flex;
-    justify-content: space-between;
-    align-items: center;
+    flex-direction: column; /* Chuyển thành cột trên mobile */
+    gap: 15px;
 }
 
 .social-links a {
     color: var(--white-color);
-    margin-left: 15px;
+    margin: 0 10px; /* Thay margin-left thành margin 2 bên */
     font-size: 18px;
     transition: color 0.3s ease;
 }
@@ -280,11 +268,66 @@ body {
     color: var(--primary-color);
 }
 
-.result-card {
-    border: 1px solid #ddd;
-    border-radius: 10px;
-    padding: 15px;
-    margin-bottom: 15px;
-    background: #fafafa;
+
+/* ----------------------------------- */
+/* --- RESPONSIVE - MEDIA QUERIES --- */
+/* ----------------------------------- */
+
+/* Áp dụng cho màn hình từ 768px trở lên (máy tính bảng, desktop) */
+@media (min-width: 768px) {
+    .header .container {
+        flex-direction: row; /* Quay lại hàng ngang */
+    }
+
+    /* Ẩn menu mobile và hiện menu desktop */
+    .main-nav {
+        display: block !important;
+    }
+    .mobile-menu-button {
+        display: none !important;
+    }
+
+    /* Trang chủ */
+    .hero {
+        padding: 120px 0;
+    }
+    .hero-content h1 {
+        font-size: 48px;
+    }
+    .hero-content p {
+        font-size: 20px;
+    }
+    .features .container {
+        flex-direction: row; /* Chuyển lại thành hàng ngang */
+    }
+
+    /* Trang tra cứu */
+    .lookup-card {
+        padding: 40px;
+    }
+    .lookup-header h1 {
+        font-size: 28px;
+    }
+    .lookup-header p {
+        font-size: 16px;
+    }
+
+
+    /* Footer */
+    .footer .container {
+        flex-direction: row; /* Chuyển lại thành hàng ngang */
+        justify-content: space-between;
+    }
+    .social-links a {
+        margin: 0 0 0 15px; /* Quay lại margin-left */
+    }
 }
 
+/* CSS cho menu mobile (sẽ cần thêm HTML và JS để hoạt động) */
+/* Tạm thời, ta chỉ ẩn menu trên mobile để tránh vỡ layout */
+@media (max-width: 767px) {
+    .main-nav {
+        display: none; /* Ẩn menu đi trên mobile */
+    }
+    /* Bạn có thể thêm một nút hamburger menu ở đây nếu muốn */
+}
