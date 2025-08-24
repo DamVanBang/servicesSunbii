@@ -1,4 +1,4 @@
-<script>
+
     // --- JavaScript để điều khiển Menu Mobile ---
     const menuButton = document.querySelector('.mobile-menu-button');
     const navMenu = document.querySelector('.main-nav');
@@ -17,4 +17,3 @@
             icon.classList.add('fa-bars');
         }
     });
-</script>
