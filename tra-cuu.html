@@ -57,14 +57,15 @@
         </div>
     </footer>
 
-    <script>
+<script>
     const searchButton = document.getElementById('searchButton');
     const searchInput = document.getElementById('searchInput');
     const resultDiv = document.getElementById('result');
 
-    // Hàm xử lý tra cứu khi nhấn nút
-    const handleSearch = async () => {
-        const keyword = searchInput.value.trim();
+    // Hàm xử lý tra cứu khi nhấn nút hoặc auto
+    const handleSearch = async (keywordFromUrl = null, methodFromUrl = null) => {
+        const keyword = keywordFromUrl || searchInput.value.trim();
+        const method = methodFromUrl || "auto"; // Nếu không có thì fallback về auto
 
         // Xóa kết quả cũ
         resultDiv.innerHTML = '';
@@ -82,8 +83,7 @@
 
         // Cấu hình API
         const apiKey = 'DVB';
-        const type = 'auto';
-        const apiUrl = `https://4aececcc-3bc2-428b-959a-9370ab9a3b06-00-2bl0p33mimkiq.riker.replit.dev/api/servicesCheck?apikey=${apiKey}&type=${type}&keyword=${keyword}`;
+        const apiUrl = `https://4aececcc-3bc2-428b-959a-9370ab9a3b06-00-2bl0p33mimkiq.riker.replit.dev/api/servicesCheck?apikey=${apiKey}&type=${method}&keyword=${keyword}`;
 
         try {
             const response = await fetch(apiUrl);
@@ -96,7 +96,6 @@
             } else {
                 resultDiv.className = 'lookup-result success';
 
-                // Hàm render 1 kết quả
                 function renderItem(item) {
                     let statusHtml = '';
                     if (item.endDate) {
@@ -127,11 +126,9 @@
                     `;
                 }
 
-                // Nếu trả về nhiều kết quả
                 if (Array.isArray(data)) {
                     resultDiv.innerHTML = data.map(renderItem).join('');
                 } else {
-                    // Nếu chỉ trả về 1 object
                     resultDiv.innerHTML = renderItem(data);
                 }
             }
@@ -146,7 +143,7 @@
     };
 
     // Gán sự kiện cho nút bấm
-    searchButton.addEventListener('click', handleSearch);
+    searchButton.addEventListener('click', () => handleSearch());
 
     // Cho phép nhấn Enter để tìm kiếm
     searchInput.addEventListener('keyup', (event) => {
@@ -154,7 +151,19 @@
             handleSearch();
         }
     });
+
+    // 🚀 Tự động chạy khi có ?keyword=...&Method=...
+    window.addEventListener('DOMContentLoaded', () => {
+        const params = new URLSearchParams(window.location.search);
+        const keyword = params.get('keyword');
+        const method = params.get('Method');
+        if (keyword) {
+            searchInput.value = keyword; // điền sẵn vào input
+            handleSearch(keyword, method);
+        }
+    });
 </script>
+
 
     
     <style>
