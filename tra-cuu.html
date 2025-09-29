@@ -3,179 +3,146 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Tra Cứu Bảo Hành - SUNBII Services</title>
+    <title>Bảng Giá Dịch Vụ - SUNBII Services</title>
+    <meta name="description" content="Tham khảo bảng giá các dịch vụ sửa chữa phần cứng, cài đặt phần mềm, bảo dưỡng laptop, điện thoại tại SUNBII Services.">
+    
     <link rel="stylesheet" href="style.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 </head>
 <body>
 
-  <header class="header">
-    <div class="container">
-        <div class="logo">
-            <a href="index.html">SUNBII <span>Services</span></a>
-        </div>
-        <nav class="main-nav">
-            <ul>
+    <header class="header">
+        <div class="container">
+            <div class="logo">
+                <a href="index.html">SUNBII <span>Services</span></a>
+            </div>
+            <nav class="main-nav">
+                <ul>
+                    <li><a href="index.html">Trang Chủ</a></li>
+                    <li><a href="tra-cuu.html">Tra Cứu Bảo Hành</a></li>
+                    <li><a href="dich-vu.html" class="active">Dịch Vụ</a></li>
+                    <li><a href="#">Liên Hệ</a></li>
                 </ul>
-        </nav>
-        
-        <button class="mobile-menu-button" aria-label="Mở menu">
-            <i class="fas fa-bars"></i>
-        </button>
+            </nav>
+            <button class="mobile-menu-button" aria-label="Mở menu">
+                <i class="fas fa-bars"></i>
+            </button>
         </div>
-</header>
+    </header>
 
     <main class="main-content">
-        <div class="container page-container">
-            <div class="lookup-card">
-                <div class="lookup-header">
-                    <i class="fas fa-shield-alt"></i>
-                    <h1>TRA CỨU THÔNG TIN BẢO HÀNH</h1>
-                    <p>Vui lòng nhập mã dịch vụ, SĐT hoặc Email để kiểm tra</p>
-                </div>
-                <div class="lookup-form">
-                    <div class="input-group">
-                        <i class="fas fa-search"></i>
-                        <input type="text" id="searchInput" placeholder="Nhập thông tin tra cứu..." required>
-                    </div>
-                    <button id="searchButton">KIỂM TRA NGAY</button>
-                </div>
-                <div id="result" class="lookup-result">
-                    </div>
+        <section class="page-header">
+            <div class="container">
+                <h1>Bảng Giá Dịch Vụ</h1>
+                <p>Luôn minh bạch, hợp lý và cạnh tranh</p>
             </div>
-        </div>
+        </section>
+
+        <section class="pricing-tables">
+            <div class="container">
+
+                <h2 class="table-title"><i class="fas fa-tools"></i> Sửa Chữa Phần Cứng</h2>
+                <table class="price-table">
+                    <thead>
+                        <tr>
+                            <th>Tên Dịch Vụ</th>
+                            <th>Mô Tả Chi Tiết</th>
+                            <th>Chi Phí (VNĐ)</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td data-label="Dịch Vụ">Thay Pin Laptop/Điện thoại</td>
+                            <td data-label="Mô Tả">Thay thế pin chai, phồng bằng pin chính hãng hoặc OEM loại 1. Bảo hành 6-12 tháng.</td>
+                            <td data-label="Chi Phí" class="price">Từ 700.000</td>
+                        </tr>
+                        <tr>
+                            <td data-label="Dịch Vụ">Thay Màn Hình</td>
+                            <td data-label="Mô Tả">Thay thế màn hình bị vỡ, sọc, chảy mực. Các loại màn HD, FullHD, 2K.</td>
+                            <td data-label="Chi Phí" class="price">Từ 1.200.000</td>
+                        </tr>
+                        <tr>
+                            <td data-label="Dịch Vụ">Nâng Cấp RAM / SSD</td>
+                            <td data-label="Mô Tả">Tăng tốc độ máy tính bằng cách lắp thêm RAM hoặc nâng cấp lên ổ cứng SSD. Miễn phí công thay.</td>
+                            <td data-label="Chi Phí" class="price">Báo giá theo linh kiện</td>
+                        </tr>
+                        <tr>
+                            <td data-label="Dịch Vụ">Sửa Lỗi Mainboard</td>
+                            <td data-label="Mô Tả">Xử lý các lỗi phức tạp như không lên nguồn, chập chờn, không nhận thiết bị ngoại vi.</td>
+                            <td data-label="Chi Phí" class="price">Từ 800.000</td>
+                        </tr>
+                    </tbody>
+                </table>
+
+                <h2 class="table-title"><i class="fas fa-laptop-code"></i> Dịch Vụ Phần Mềm</h2>
+                <table class="price-table">
+                    <thead>
+                        <tr>
+                            <th>Tên Dịch Vụ</th>
+                            <th>Mô Tả Chi Tiết</th>
+                            <th>Chi Phí (VNĐ)</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td data-label="Dịch Vụ">Cài đặt Windows / MacOS</td>
+                            <td data-label="Mô Tả">Cài đặt mới hệ điều hành theo yêu cầu, bao gồm bộ driver và các phần mềm văn phòng cơ bản.</td>
+                            <td data-label="Chi Phí" class="price">200.000</td>
+                        </tr>
+                        <tr>
+                            <td data-label="Dịch Vụ">Diệt Virus & Tối Ưu Hệ Thống</td>
+                            <td data-label="Mô Tả">Quét và loại bỏ virus, mã độc. Tinh chỉnh hệ thống giúp máy khởi động và hoạt động nhanh hơn.</td>
+                            <td data-label="Chi Phí" class="price">150.000</td>
+                        </tr>
+                        <tr>
+                            <td data-label="Dịch Vụ">Cứu Dữ Liệu</td>
+                            <td data-label="Mô Tả">Phục hồi dữ liệu từ ổ cứng, USB, thẻ nhớ bị format nhầm, bad sector hoặc không truy cập được.</td>
+                            <td data-label="Chi Phí" class="price">Từ 500.000</td>
+                        </tr>
+                    </tbody>
+                </table>
+                
+                <h2 class="table-title"><i class="fas fa-pump-soap"></i> Bảo Dưỡng & Vệ Sinh</h2>
+                <table class="price-table">
+                    <thead>
+                        <tr>
+                            <th>Tên Dịch Vụ</th>
+                            <th>Mô Tả Chi Tiết</th>
+                            <th>Chi Phí (VNĐ)</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td data-label="Dịch Vụ">Vệ Sinh Laptop & PC Toàn Diện</td>
+                            <td data-label="Mô Tả">Làm sạch bụi bẩn bên trong, tra keo tản nhiệt CPU/GPU loại tốt (Arctic MX-4). Giúp máy mát hơn 5-15°C.</td>
+                            <td data-label="Chi Phí" class="price">250.000</td>
+                        </tr>
+                        <tr>
+                            <td data-label="Dịch Vụ">Vệ Sinh Macbook</td>
+                            <td data-label="Mô Tả">Quy trình vệ sinh chuyên nghiệp dành riêng cho Macbook, đảm bảo an toàn và hiệu quả.</td>
+                            <td data-label="Chi Phí" class="price">350.000</td>
+                        </tr>
+                    </tbody>
+                </table>
+                
+                <div class="pricing-note">
+                    <p><strong>Lưu ý:</strong> Bảng giá trên chỉ mang tính tham khảo và có thể thay đổi tùy thuộc vào model máy và tình trạng thực tế. Vui lòng liên hệ trực tiếp để được tư vấn và báo giá chính xác nhất!</p>
+                </div>
+            </div>
+        </section>
     </main>
 
     <footer class="footer">
-        <div class="container">
-            <p>&copy; 2025 SUNBII Services. All rights reserved.</p>
-            <div class="social-links">
-                <a href="#"><i class="fab fa-facebook-f"></i></a>
-                <a href="#"><i class="fab fa-instagram"></i></a>
-                <a href="#"><i class="fab fa-youtube"></i></a>
-            </div>
-        </div>
+       <div class="container">
+           <p>&copy; 2025 SUNBII Services. All rights reserved.</p>
+           <div class="social-links">
+               <a href="https://fb.com/damvanbang2006"><i class="fab fa-facebook-f"></i></a>
+               <a href="https://instargram.com/damvanbang2006"><i class="fab fa-instagram"></i></a>
+               <a href="#"><i class="fab fa-youtube"></i></a>
+           </div>
+       </div>
     </footer>
-
-<script>
-    const searchButton = document.getElementById('searchButton');
-    const searchInput = document.getElementById('searchInput');
-    const resultDiv = document.getElementById('result');
-
-    // Hàm xử lý tra cứu khi nhấn nút hoặc auto
-    const handleSearch = async (keywordFromUrl = null, methodFromUrl = null) => {
-        const keyword = keywordFromUrl || searchInput.value.trim();
-        const method = methodFromUrl || "auto"; // Nếu không có thì fallback về auto
-
-        // Xóa kết quả cũ
-        resultDiv.innerHTML = '';
-        resultDiv.className = 'lookup-result';
-
-        if (keyword === '') {
-            resultDiv.className = 'lookup-result error';
-            resultDiv.innerHTML = '<p>Vui lòng nhập thông tin cần tra cứu.</p>';
-            return;
-        }
-
-        // Hiển thị trạng thái đang tìm kiếm
-        searchButton.disabled = true;
-        searchButton.innerHTML = '<i class="fas fa-spinner fa-spin"></i> ĐANG TÌM KIẾM...';
-
-        // Cấu hình API
-        const apiKey = 'DVB';
-        const apiUrl = `https://apitest.sunbii.vn/api/servicesCheck?apikey=${apiKey}&type=${method}&keyword=${keyword}`;
-
-        try {
-            const response = await fetch(apiUrl);
-            const data = await response.json();
-
-            // Nếu API trả về lỗi
-            if (data.message) {
-                resultDiv.className = 'lookup-result error';
-                resultDiv.innerHTML = `<p>${data.message}</p>`;
-            } else {
-                resultDiv.className = 'lookup-result success';
-
-                function renderItem(item) {
-                    let statusHtml = '';
-                    if (item.endDate) {
-                        const parts = item.endDate.split('/');
-                        if (parts.length === 3) {
-                            const endDate = new Date(parts[2], parts[1] - 1, parts[0]);
-                            const today = new Date();
-                            const status = endDate >= today ? 'Còn bảo hành' : 'Hết hạn bảo hành';
-                            const statusClass = endDate >= today ? 'status-active' : 'status-expired';
-                            statusHtml = `<p><strong>Tình trạng:</strong> <span class="${statusClass}">${status}</span></p>`;
-                        }
-                    }
-
-                    return `
-                        <div class="result-card">
-                            <h3>Thông Tin Bảo Hành</h3>
-                            <p><strong>Khách hàng:</strong> ${item.Name || 'Không rõ'}</p>
-                            <p><strong>Mã dịch vụ:</strong> ${item.servicesCode || 'Không có'}</p>
-                            <p><strong>Ngày kích hoạt:</strong> ${item.date || 'Không có'}</p>
-                            <p><strong>Ngày hết hạn:</strong> ${item.endDate || 'Không có'}</p>
-                            <p><strong>Thời hạn (tháng):</strong> ${item.duration || 'Không rõ'}</p>
-                            <p><strong>Địa chỉ:</strong> ${item.contact?.address || 'Không có'}</p>
-                            <p><strong>Điện thoại:</strong> ${item.contact?.phone || 'Không có'}</p>
-                            <p><strong>Email:</strong> ${item.contact?.email || 'Không có'}</p>
-                            <p><strong>Facebook:</strong> ${item.contact?.facebook || 'Không có'}</p>
-                            ${statusHtml}
-                        </div>
-                    `;
-                }
-
-                if (Array.isArray(data)) {
-                    resultDiv.innerHTML = data.map(renderItem).join('');
-                } else {
-                    resultDiv.innerHTML = renderItem(data);
-                }
-            }
-        } catch (error) {
-            resultDiv.className = 'lookup-result error';
-            resultDiv.innerHTML = '<p>Có lỗi xảy ra khi kết nối tới máy chủ. Vui lòng thử lại sau.</p>';
-            console.error('Fetch Error:', error);
-        } finally {
-            searchButton.disabled = false;
-            searchButton.innerHTML = 'KIỂM TRA NGAY';
-        }
-    };
-
-    // Gán sự kiện cho nút bấm
-    searchButton.addEventListener('click', () => handleSearch());
-
-    // Cho phép nhấn Enter để tìm kiếm
-    searchInput.addEventListener('keyup', (event) => {
-        if (event.key === 'Enter') {
-            handleSearch();
-        }
-    });
-
-    // 🚀 Tự động chạy khi có ?keyword=...&Method=...
-    window.addEventListener('DOMContentLoaded', () => {
-        const params = new URLSearchParams(window.location.search);
-        const keyword = params.get('keyword');
-        const method = params.get('Method');
-        if (keyword) {
-            searchInput.value = keyword; // điền sẵn vào input
-            handleSearch(keyword, method);
-        }
-    });
-</script>
-
-
     
-    <style>
-        .status-active {
-            color: #2e7d32;
-            font-weight: bold;
-        }
-        .status-expired {
-            color: #c62828;
-            font-weight: bold;
-        }
-    </style>
-
+    <script src="script.js"></script>
 </body>
 </html>
