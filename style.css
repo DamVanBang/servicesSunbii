@@ -302,7 +302,7 @@ body {
 .service-price {
     font-weight: 700;
     color: var(--primary-color);
-    white-space: nowrap;
+   /* white-space: nowrap;*/
     padding-left: 15px;
 }
 
