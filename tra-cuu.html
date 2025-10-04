@@ -79,13 +79,8 @@
         const searchInput = document.getElementById('searchInput');
         const resultDiv = document.getElementById('result');
         
-        /**
-         * Hàm tìm kiếm được cập nhật để nhận thêm tham số 'method'
-         * @param {string | null} method - Phương thức tra cứu (ví dụ: 'QRCoder')
-         */
         const handleSearch = async (method = null) => {
             const keyword = searchInput.value.trim();
-            
             resultDiv.innerHTML = '';
             resultDiv.className = 'lookup-result';
 
@@ -98,10 +93,7 @@
             searchButton.disabled = true;
             searchButton.innerHTML = '<i class="fas fa-spinner fa-spin"></i> ĐANG TÌM KIẾM...';
             
-            // Xây dựng URL cơ bản
             let apiUrl = `https://apitest.sunbii.vn/api/servicesCheck?type=auto&keyword=${encodeURIComponent(keyword)}`;
-
-            // Nếu có tham số 'method', thêm nó vào URL
             if (method) {
                 apiUrl += `&Method=${encodeURIComponent(method)}`;
             }
@@ -110,38 +102,75 @@
                 const response = await fetch(apiUrl);
                 const data = await response.json();
                 
-                const resultData = Array.isArray(data) && data.length > 0 ? data[0] : null;
-
-                if (resultData) {
+                if (Array.isArray(data) && data.length > 0) {
                     resultDiv.className = 'lookup-result success';
                     
-                    const formatDate = (dateStr) => {
-                        if (!dateStr || !dateStr.includes('-')) return dateStr;
-                        const [year, month, day] = dateStr.split('-');
-                        return `${day}/${month}/${year}`;
-                    };
+                    // Duyệt qua tất cả kết quả và tạo HTML
+                    const resultsHtml = data.map((item, index) => {
+                        // --- Logic tính trạng thái bảo hành ---
+                        const parseVNDate = (dateStr) => {
+                            if (!dateStr || !dateStr.includes('/')) return null;
+                            const [day, month, year] = dateStr.split('/');
+                            return new Date(`${year}-${month}-${day}`);
+                        };
+                        const endDate = parseVNDate(item.endDate);
+                        let statusHtml = '<span class="status-unknown">Không xác định</span>';
+                        if (endDate) {
+                            const today = new Date();
+                            today.setHours(0, 0, 0, 0); // Chuẩn hóa về đầu ngày
+                            if (endDate >= today) {
+                                statusHtml = '<span class="status-active">Còn hạn</span>';
+                            } else {
+                                statusHtml = '<span class="status-expired">Hết hạn</span>';
+                            }
+                        }
 
-                    let qrHistoryHtml = '<li>Không có lịch sử.</li>';
-                    if (resultData.log && resultData.log.QRCheckHistory && resultData.log.QRCheckHistory.length > 0) {
-                        qrHistoryHtml = resultData.log.QRCheckHistory.map(log => 
-                            `<li><strong>Thời gian:</strong> ${log.time} - <strong>Phương thức:</strong> ${log.method}</li>`
-                        ).join('');
-                    }
+                        // --- Logic rút gọn lịch sử QR ---
+                        let qrHistoryHtml = '<li>Không có lịch sử.</li>';
+                        const fullHistory = item.log?.QRCheckHistory || [];
+                        if (fullHistory.length > 0) {
+                            const visibleHistory = fullHistory.slice(0, 5);
+                            const hiddenHistory = fullHistory.slice(5);
 
-                    resultDiv.innerHTML = `
-                        <h3><i class="fas fa-user-check"></i> Thông Tin Khách Hàng</h3>
-                        <p><strong>Tên khách hàng:</strong> ${resultData.Name || 'Không có'}</p>
-                        <p><strong>Số điện thoại:</strong> ${resultData.contact?.phone || 'Không có'}</p>
-                        <h3><i class="fas fa-info-circle"></i> Chi Tiết Dịch Vụ</h3>
-                        <p><strong>Mã dịch vụ:</strong> <span class="service-code">${resultData.serviceCode || 'Không có'}</span></p>
-                        <p><strong>Lỗi xử lý:</strong> ${resultData.processingError || 'Không có'}</p>
-                        <p><strong>Phương án xử lý:</strong> ${resultData.treatmentPlan || 'Không có'}</p>
-                        <h3><i class="fas fa-calendar-alt"></i> Thời Hạn Bảo Hành</h3>
-                        <p><strong>Ngày kích hoạt:</strong> ${formatDate(resultData.date)}</p>
-                        <p><strong>Ngày hết hạn:</strong> ${resultData.endDate || 'Không có'}</p>
-                        <h3><i class="fas fa-qrcode"></i> Lịch Sử Quét QR</h3>
-                        <ul class="log-history">${qrHistoryHtml}</ul>
-                    `;
+                            qrHistoryHtml = visibleHistory.map(log => `<li><strong>${log.time}</strong> - ${log.method}</li>`).join('');
+                            
+                            if (hiddenHistory.length > 0) {
+                                qrHistoryHtml += `<ul class="hidden-logs" id="hidden-logs-${index}">`;
+                                qrHistoryHtml += hiddenHistory.map(log => `<li><strong>${log.time}</strong> - ${log.method}</li>`).join('');
+                                qrHistoryHtml += '</ul>';
+                                qrHistoryHtml += `<button class="show-more-btn" data-target="hidden-logs-${index}">Xem thêm ${hiddenHistory.length} lần quét</button>`;
+                            }
+                        }
+
+                        // --- Ghép chuỗi HTML cho mỗi kết quả ---
+                        return `
+                            <div class="result-item">
+                                <div class="result-header">
+                                    <h4>Phiếu bảo hành: <span class="service-code">${item.serviceCode || 'N/A'}</span></h4>
+                                    ${statusHtml}
+                                </div>
+                                
+                                <h3><i class="fas fa-user-check"></i> Thông Tin Khách Hàng</h3>
+                                <p><strong>Tên:</strong> ${item.Name || 'Không có'}</p>
+                                <p><strong>SĐT:</strong> ${item.contact?.phone || 'Không có'}</p>
+
+                                <h3><i class="fas fa-info-circle"></i> Chi Tiết Dịch Vụ</h3>
+                                <p><strong>Lỗi xử lý:</strong> ${item.processingError || 'Không có'}</p>
+                                <p><strong>Phương án xử lý:</strong> ${item.treatmentPlan || 'Không có'}</p>
+
+                                <h3><i class="fas fa-calendar-alt"></i> Thời Hạn Bảo Hành</h3>
+                                <p><strong>Ngày kích hoạt:</strong> ${item.date ? item.date.split('-').reverse().join('/') : 'N/A'}</p>
+                                <p><strong>Ngày hết hạn:</strong> ${item.endDate || 'N/A'}</p>
+                                <p><strong>Thời gian:</strong> ${item.duration || 'N/A'} tháng</p>
+
+                                <h3><i class="fas fa-qrcode"></i> Lịch Sử Quét QR</h3>
+                                <ul class="log-history">${qrHistoryHtml}</ul>
+                            </div>
+                        `;
+                    }).join('');
+                    
+                    resultDiv.innerHTML = resultsHtml;
+
                 } else {
                     resultDiv.className = 'lookup-result error';
                     resultDiv.innerHTML = '<p>Không tìm thấy thông tin bảo hành cho mã bạn đã nhập.</p>';
@@ -156,27 +185,30 @@
             }
         };
 
-        // Gán sự kiện cho nút bấm
         searchButton.addEventListener('click', () => handleSearch());
-
-        // Gán sự kiện cho phím Enter
         searchInput.addEventListener('keyup', (event) => {
-            if (event.key === 'Enter') {
-                handleSearch();
-            }
+            if (event.key === 'Enter') handleSearch();
         });
         
-        // --- LOGIC MỚI: Tự động tìm kiếm khi tải trang nếu có tham số URL ---
+        // --- Logic mới cho nút "Xem thêm" ---
+        resultDiv.addEventListener('click', function(event) {
+            if (event.target && event.target.classList.contains('show-more-btn')) {
+                const targetId = event.target.getAttribute('data-target');
+                const hiddenLogs = document.getElementById(targetId);
+                if (hiddenLogs) {
+                    hiddenLogs.classList.add('visible');
+                    event.target.style.display = 'none'; // Ẩn nút sau khi bấm
+                }
+            }
+        });
+
         document.addEventListener('DOMContentLoaded', () => {
             const params = new URLSearchParams(window.location.search);
             const keywordFromUrl = params.get('keyword');
             const methodFromUrl = params.get('Method');
 
-            // Nếu cả 'keyword' và 'Method=QRCoder' đều tồn tại trên URL
             if (keywordFromUrl && methodFromUrl === 'QRCoder') {
-                // 1. Điền keyword vào ô tìm kiếm
                 searchInput.value = keywordFromUrl;
-                // 2. Gọi hàm tìm kiếm và truyền 'method' vào
                 handleSearch(methodFromUrl);
             }
         });
@@ -184,11 +216,73 @@
     
     <style>
         .lookup-result h3 { font-size: 18px; color: var(--primary-color); margin-top: 25px; margin-bottom: 10px; padding-bottom: 5px; border-bottom: 1px solid #eee; }
-        .lookup-result h3:first-child { margin-top: 0; }
         .lookup-result p { line-height: 1.8; }
         .service-code { font-family: 'Courier New', monospace; background-color: #f0f0f0; padding: 2px 6px; border-radius: 4px; font-weight: bold; }
         .log-history { list-style-type: none; padding-left: 0; }
         .log-history li { background-color: #f8f9fa; padding: 8px 12px; border-radius: 4px; margin-bottom: 5px; font-size: 14px; }
+        
+        /* === CSS MỚI === */
+        .result-item {
+            border: 1px solid #e9ecef;
+            border-radius: 8px;
+            padding: 20px;
+            margin-top: 20px;
+            background-color: #fff;
+        }
+        .result-item:first-child {
+            margin-top: 0;
+        }
+        .result-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+            padding-bottom: 15px;
+            border-bottom: 2px solid #f1f3f5;
+        }
+        .result-header h4 {
+            margin: 0;
+            font-size: 16px;
+        }
+        .result-header .service-code {
+            font-size: 16px;
+        }
+        
+        /* Trạng thái bảo hành */
+        .status-active, .status-expired, .status-unknown {
+            font-weight: bold;
+            padding: 5px 12px;
+            border-radius: 20px;
+            font-size: 14px;
+            color: #fff;
+        }
+        .status-active { background-color: #28a745; }
+        .status-expired { background-color: #dc3545; }
+        .status-unknown { background-color: #6c757d; }
+        
+        /* Nút xem thêm */
+        .hidden-logs {
+            display: none;
+            padding-left: 0; /* Ghi đè style mặc định của ul */
+            list-style: none; /* Ghi đè style mặc định của ul */
+        }
+        .hidden-logs.visible {
+            display: block;
+        }
+        .show-more-btn {
+            background-color: #e9ecef;
+            border: none;
+            color: #495057;
+            padding: 8px 15px;
+            border-radius: 5px;
+            cursor: pointer;
+            margin-top: 10px;
+            font-size: 13px;
+            transition: background-color 0.2s;
+        }
+        .show-more-btn:hover {
+            background-color: #dee2e6;
+        }
     </style>
 </body>
 </html>
