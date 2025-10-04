@@ -56,18 +56,17 @@
         <div class="container">
             <p>&copy; 2025 SUNBII Services. All rights reserved.</p>
             <div class="social-links">
-                <a href="https://fb.com/damvanbang2006"><i class="fab fa-facebook-f"></i></a>
-                <a href="https://instargram.com/damvanbang2006"><i class="fab fa-instagram"></i></a>
+                <a href="https://fb.com/damvanbang2006" target="_blank"><i class="fab fa-facebook-f"></i></a>
+                <a href="https://instargram.com/damvanbang2006" target="_blank"><i class="fab fa-instagram"></i></a>
                 <a href="#"><i class="fab fa-youtube"></i></a>
             </div>
         </div>
     </footer>
     
     <script>
-        // --- Script cho menu mobile (giống index.html) ---
+        // --- Script cho menu mobile ---
         const menuButton = document.querySelector('.mobile-menu-button');
         const navMenu = document.querySelector('.main-nav');
-
         menuButton.addEventListener('click', () => {
             navMenu.classList.toggle('active');
             const icon = menuButton.querySelector('i');
@@ -79,8 +78,12 @@
         const searchButton = document.getElementById('searchButton');
         const searchInput = document.getElementById('searchInput');
         const resultDiv = document.getElementById('result');
-
-        const handleSearch = async () => {
+        
+        /**
+         * Hàm tìm kiếm được cập nhật để nhận thêm tham số 'method'
+         * @param {string | null} method - Phương thức tra cứu (ví dụ: 'QRCoder')
+         */
+        const handleSearch = async (method = null) => {
             const keyword = searchInput.value.trim();
             
             resultDiv.innerHTML = '';
@@ -95,29 +98,29 @@
             searchButton.disabled = true;
             searchButton.innerHTML = '<i class="fas fa-spinner fa-spin"></i> ĐANG TÌM KIẾM...';
             
-            // --- API ĐÃ ĐƯỢC CẬP NHẬT ---
-            const apiUrl = `https://apitest.sunbii.vn/api/servicesCheck?type=auto&keyword=${encodeURIComponent(keyword)}`;
+            // Xây dựng URL cơ bản
+            let apiUrl = `https://apitest.sunbii.vn/api/servicesCheck?type=auto&keyword=${encodeURIComponent(keyword)}`;
+
+            // Nếu có tham số 'method', thêm nó vào URL
+            if (method) {
+                apiUrl += `&Method=${encodeURIComponent(method)}`;
+            }
 
             try {
                 const response = await fetch(apiUrl);
                 const data = await response.json();
                 
-                // API trả về mảng, ta sẽ lấy phần tử đầu tiên
                 const resultData = Array.isArray(data) && data.length > 0 ? data[0] : null;
 
                 if (resultData) {
                     resultDiv.className = 'lookup-result success';
                     
-                    // --- GIAO DIỆN HIỂN THỊ ĐÃ CẬP NHẬT ---
-                    
-                    // Chuyển đổi ngày YYYY-MM-DD sang DD/MM/YYYY
                     const formatDate = (dateStr) => {
                         if (!dateStr || !dateStr.includes('-')) return dateStr;
                         const [year, month, day] = dateStr.split('-');
                         return `${day}/${month}/${year}`;
                     };
 
-                    // Tạo danh sách lịch sử quét QR
                     let qrHistoryHtml = '<li>Không có lịch sử.</li>';
                     if (resultData.log && resultData.log.QRCheckHistory && resultData.log.QRCheckHistory.length > 0) {
                         qrHistoryHtml = resultData.log.QRCheckHistory.map(log => 
@@ -129,34 +132,23 @@
                         <h3><i class="fas fa-user-check"></i> Thông Tin Khách Hàng</h3>
                         <p><strong>Tên khách hàng:</strong> ${resultData.Name || 'Không có'}</p>
                         <p><strong>Số điện thoại:</strong> ${resultData.contact?.phone || 'Không có'}</p>
-                        <p><strong>Email:</strong> ${resultData.contact?.email || 'Không có'}</p>
-                        <p><strong>Địa chỉ:</strong> ${resultData.contact?.address || 'Không có'}</p>
-                        <p><strong>Facebook:</strong> ${resultData.contact?.facebook || 'Không có'}</p>
-
                         <h3><i class="fas fa-info-circle"></i> Chi Tiết Dịch Vụ</h3>
                         <p><strong>Mã dịch vụ:</strong> <span class="service-code">${resultData.serviceCode || 'Không có'}</span></p>
                         <p><strong>Lỗi xử lý:</strong> ${resultData.processingError || 'Không có'}</p>
                         <p><strong>Phương án xử lý:</strong> ${resultData.treatmentPlan || 'Không có'}</p>
-                        <p><strong>Ghi chú thêm:</strong> ${resultData.note || 'Không có'}</p>
-
                         <h3><i class="fas fa-calendar-alt"></i> Thời Hạn Bảo Hành</h3>
                         <p><strong>Ngày kích hoạt:</strong> ${formatDate(resultData.date)}</p>
                         <p><strong>Ngày hết hạn:</strong> ${resultData.endDate || 'Không có'}</p>
-                        <p><strong>Thời gian:</strong> ${resultData.duration || 'N/A'} tháng</p>
-
                         <h3><i class="fas fa-qrcode"></i> Lịch Sử Quét QR</h3>
-                        <ul class="log-history">
-                            ${qrHistoryHtml}
-                        </ul>
+                        <ul class="log-history">${qrHistoryHtml}</ul>
                     `;
                 } else {
                     resultDiv.className = 'lookup-result error';
-                    resultDiv.innerHTML = '<p>Không tìm thấy thông tin bảo hành cho mã bạn đã nhập. Vui lòng kiểm tra lại.</p>';
+                    resultDiv.innerHTML = '<p>Không tìm thấy thông tin bảo hành cho mã bạn đã nhập.</p>';
                 }
-
             } catch (error) {
                 resultDiv.className = 'lookup-result error';
-                resultDiv.innerHTML = '<p>Có lỗi xảy ra khi kết nối tới máy chủ. Vui lòng thử lại sau.</p>';
+                resultDiv.innerHTML = '<p>Có lỗi xảy ra khi kết nối tới máy chủ.</p>';
                 console.error('Fetch Error:', error);
             } finally {
                 searchButton.disabled = false;
@@ -164,47 +156,39 @@
             }
         };
 
-        searchButton.addEventListener('click', handleSearch);
+        // Gán sự kiện cho nút bấm
+        searchButton.addEventListener('click', () => handleSearch());
+
+        // Gán sự kiện cho phím Enter
         searchInput.addEventListener('keyup', (event) => {
             if (event.key === 'Enter') {
                 handleSearch();
             }
         });
+        
+        // --- LOGIC MỚI: Tự động tìm kiếm khi tải trang nếu có tham số URL ---
+        document.addEventListener('DOMContentLoaded', () => {
+            const params = new URLSearchParams(window.location.search);
+            const keywordFromUrl = params.get('keyword');
+            const methodFromUrl = params.get('Method');
+
+            // Nếu cả 'keyword' và 'Method=QRCoder' đều tồn tại trên URL
+            if (keywordFromUrl && methodFromUrl === 'QRCoder') {
+                // 1. Điền keyword vào ô tìm kiếm
+                searchInput.value = keywordFromUrl;
+                // 2. Gọi hàm tìm kiếm và truyền 'method' vào
+                handleSearch(methodFromUrl);
+            }
+        });
     </script>
     
     <style>
-        .lookup-result h3 {
-            font-size: 18px;
-            color: var(--primary-color);
-            margin-top: 25px;
-            margin-bottom: 10px;
-            padding-bottom: 5px;
-            border-bottom: 1px solid #eee;
-        }
-        .lookup-result h3:first-child {
-            margin-top: 0;
-        }
-        .lookup-result p {
-            line-height: 1.8;
-        }
-        .service-code {
-            font-family: 'Courier New', monospace;
-            background-color: #f0f0f0;
-            padding: 2px 6px;
-            border-radius: 4px;
-            font-weight: bold;
-        }
-        .log-history {
-            list-style-type: none;
-            padding-left: 0;
-        }
-        .log-history li {
-            background-color: #f8f9fa;
-            padding: 8px 12px;
-            border-radius: 4px;
-            margin-bottom: 5px;
-            font-size: 14px;
-        }
+        .lookup-result h3 { font-size: 18px; color: var(--primary-color); margin-top: 25px; margin-bottom: 10px; padding-bottom: 5px; border-bottom: 1px solid #eee; }
+        .lookup-result h3:first-child { margin-top: 0; }
+        .lookup-result p { line-height: 1.8; }
+        .service-code { font-family: 'Courier New', monospace; background-color: #f0f0f0; padding: 2px 6px; border-radius: 4px; font-weight: bold; }
+        .log-history { list-style-type: none; padding-left: 0; }
+        .log-history li { background-color: #f8f9fa; padding: 8px 12px; border-radius: 4px; margin-bottom: 5px; font-size: 14px; }
     </style>
 </body>
 </html>
