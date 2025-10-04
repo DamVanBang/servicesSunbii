@@ -63,169 +63,170 @@
         </div>
     </footer>
     
-  <script>
-    // --- Script cho menu mobile ---
-    const menuButton = document.querySelector('.mobile-menu-button');
-    const navMenu = document.querySelector('.main-nav');
-    menuButton.addEventListener('click', () => {
-        navMenu.classList.toggle('active');
-        const icon = menuButton.querySelector('i');
-        icon.classList.toggle('fa-bars');
-        icon.classList.toggle('fa-times');
-    });
+    <script>
+        // --- Script cho menu mobile ---
+        const menuButton = document.querySelector('.mobile-menu-button');
+        const navMenu = document.querySelector('.main-nav');
+        menuButton.addEventListener('click', () => {
+            navMenu.classList.toggle('active');
+            const icon = menuButton.querySelector('i');
+            icon.classList.toggle('fa-bars');
+            icon.classList.toggle('fa-times');
+        });
 
-    // --- Script cho chức năng tra cứu ---
-    const searchButton = document.getElementById('searchButton');
-    const searchInput = document.getElementById('searchInput');
-    const resultDiv = document.getElementById('result');
-    
-    // --- HÀM TÌM KIẾM (Không thay đổi) ---
-    const handleSearch = async (method = null) => {
-        const keyword = searchInput.value.trim();
-        resultDiv.innerHTML = '';
-        resultDiv.className = 'lookup-result';
-
-        if (keyword === '') {
-            resultDiv.className = 'lookup-result error';
-            resultDiv.innerHTML = '<p>Vui lòng nhập thông tin cần tra cứu.</p>';
-            return;
-        }
-
-        searchButton.disabled = true;
-        searchButton.innerHTML = '<i class="fas fa-spinner fa-spin"></i> ĐANG TÌM KIẾM...';
+        // --- Script cho chức năng tra cứu ---
+        const searchButton = document.getElementById('searchButton');
+        const searchInput = document.getElementById('searchInput');
+        const resultDiv = document.getElementById('result');
         
-        let apiUrl = `https://apitest.sunbii.vn/api/servicesCheck?type=auto&keyword=${encodeURIComponent(keyword)}`;
-        if (method) {
-            apiUrl += `&Method=${encodeURIComponent(method)}`;
-        }
+        const handleSearch = async (method = null) => {
+            const keyword = searchInput.value.trim();
+            resultDiv.innerHTML = '';
+            resultDiv.className = 'lookup-result';
 
-        try {
-            const response = await fetch(apiUrl);
-            const data = await response.json();
-            
-            if (Array.isArray(data) && data.length > 0) {
-                resultDiv.className = 'lookup-result success';
-                
-                const resultsHtml = data.map((item, index) => {
-                    const parseVNDate = (dateStr) => {
-                        if (!dateStr || !dateStr.includes('/')) return null;
-                        const [day, month, year] = dateStr.split('/');
-                        return new Date(`${year}-${month}-${day}`);
-                    };
-                    const endDate = parseVNDate(item.endDate);
-                    let statusHtml = '<span class="status-unknown">Không xác định</span>';
-                    if (endDate) {
-                        const today = new Date();
-                        today.setHours(0, 0, 0, 0);
-                        if (endDate >= today) {
-                            statusHtml = '<span class="status-active">Còn hạn</span>';
-                        } else {
-                            statusHtml = '<span class="status-expired">Hết hạn</span>';
-                        }
-                    }
-
-                    let qrHistoryHtml = '';
-                    const allLogs = item.log?.QRCheckHistory || [];
-                    const filteredLogs = allLogs.filter(log => log.method === 'QRCoder');
-
-                    if (filteredLogs.length > 0) {
-                        const visibleLogs = filteredLogs.slice(0, 5);
-                        const hiddenLogs = filteredLogs.slice(5);
-                        qrHistoryHtml = visibleLogs.map(log => `<li><strong>${log.time}</strong> - ${log.method}</li>`).join('');
-                        
-                        if (hiddenLogs.length > 0) {
-                            let hiddenList = hiddenLogs.map(log => `<li><strong>${log.time}</strong> - ${log.method}</li>`).join('');
-                            qrHistoryHtml += `<ul class="hidden-logs" id="hidden-logs-${index}">${hiddenList}</ul>`;
-                            qrHistoryHtml += `<button class="toggle-logs-btn" data-target="hidden-logs-${index}" data-state="collapsed"><i class="fas fa-plus-circle"></i> Mở rộng (${hiddenLogs.length})</button>`;
-                        }
-                    } else {
-                         qrHistoryHtml = '<li>Không có lịch sử quét QR.</li>';
-                    }
-
-                    return `
-                        <div class="result-item">
-                            <div class="result-header">
-                                <h4>Phiếu bảo hành: <span class="service-code">${item.serviceCode || 'N/A'}</span></h4>
-                                ${statusHtml}
-                            </div>
-                            <h3><i class="fas fa-user-check"></i> Thông Tin Khách Hàng</h3>
-                            <p><strong>Tên:</strong> ${item.Name || 'Không có'}</p>
-                            <p><strong>SĐT:</strong> ${item.contact?.phone || 'Không có'}</p>
-                            <h3><i class="fas fa-info-circle"></i> Chi Tiết Dịch Vụ</h3>
-                            <p><strong>Lỗi xử lý:</strong> ${item.processingError || 'Không có'}</p>
-                            <p><strong>Phương án xử lý:</strong> ${item.treatmentPlan || 'Không có'}</p>
-                            <p><strong>Ghi chú thêm:</strong> ${item.note || 'Không có'}</p>
-                            <h3><i class="fas fa-calendar-alt"></i> Thời Hạn Bảo Hành</h3>
-                            <p><strong>Ngày kích hoạt:</strong> ${item.date ? item.date.split('-').reverse().join('/') : 'N/A'}</p>
-                            <p><strong>Ngày hết hạn:</strong> ${item.endDate || 'N/A'}</p>
-                            <p><strong>Thời gian:</strong> ${item.duration || 'N/A'} tháng</p>
-                            <h3><i class="fas fa-qrcode"></i> Lịch Sử Quét QR (QRCoder)</h3>
-                            <ul class="log-history">${qrHistoryHtml}</ul>
-                        </div>
-                    `;
-                }).join('');
-                
-                resultDiv.innerHTML = resultsHtml;
-
-            } else {
+            if (keyword === '') {
                 resultDiv.className = 'lookup-result error';
-                resultDiv.innerHTML = '<p>Không tìm thấy thông tin bảo hành cho mã bạn đã nhập.</p>';
+                resultDiv.innerHTML = '<p>Vui lòng nhập thông tin cần tra cứu.</p>';
+                return;
             }
-        } catch (error) {
-            resultDiv.className = 'lookup-result error';
-            resultDiv.innerHTML = '<p>Có lỗi xảy ra khi kết nối tới máy chủ.</p>';
-            console.error('Fetch Error:', error);
-        } finally {
-            searchButton.disabled = false;
-            searchButton.innerHTML = 'KIỂM TRA NGAY';
-        }
-    };
 
-    // --- CÁC HÀM GÁN SỰ KIỆN (Không thay đổi) ---
-    searchButton.addEventListener('click', () => handleSearch());
-    searchInput.addEventListener('keyup', (event) => {
-        if (event.key === 'Enter') handleSearch();
-    });
-    
-    resultDiv.addEventListener('click', function(event) {
-        const button = event.target.closest('.toggle-logs-btn');
-        if (button) {
-            const targetId = button.getAttribute('data-target');
-            const hiddenLogs = document.getElementById(targetId);
-            const currentState = button.getAttribute('data-state');
+            searchButton.disabled = true;
+            searchButton.innerHTML = '<i class="fas fa-spinner fa-spin"></i> ĐANG TÌM KIẾM...';
+            
+            let apiUrl = `https://apitest.sunbii.vn/api/servicesCheck?type=auto&keyword=${encodeURIComponent(keyword)}`;
+            if (method) {
+                apiUrl += `&Method=${encodeURIComponent(method)}`;
+            }
 
-            if (hiddenLogs) {
-                if (currentState === 'collapsed') {
-                    hiddenLogs.style.display = 'block';
-                    button.setAttribute('data-state', 'expanded');
-                    button.innerHTML = '<i class="fas fa-minus-circle"></i> Thu gọn';
+            try {
+                const response = await fetch(apiUrl);
+                const data = await response.json();
+                
+                if (Array.isArray(data) && data.length > 0) {
+                    resultDiv.className = 'lookup-result success';
+                    
+                    const resultsHtml = data.map((item, index) => {
+                        const parseVNDate = (dateStr) => {
+                            if (!dateStr || !dateStr.includes('/')) return null;
+                            const [day, month, year] = dateStr.split('/');
+                            return new Date(`${year}-${month}-${day}`);
+                        };
+                        const endDate = parseVNDate(item.endDate);
+                        let statusHtml = '<span class="status-unknown">Không xác định</span>';
+                        if (endDate) {
+                            const today = new Date();
+                            today.setHours(0, 0, 0, 0);
+                            if (endDate >= today) {
+                                statusHtml = '<span class="status-active">Còn hạn</span>';
+                            } else {
+                                statusHtml = '<span class="status-expired">Hết hạn</span>';
+                            }
+                        }
+
+                        // --- CẬP NHẬT: Lọc và tạo lịch sử QR ---
+                        let qrHistoryHtml = '';
+                        const allLogs = item.log?.QRCheckHistory || [];
+                        const filteredLogs = allLogs.filter(log => log.method === 'QRCoder');
+
+                        if (filteredLogs.length > 0) {
+                            const visibleLogs = filteredLogs.slice(0, 5);
+                            const hiddenLogs = filteredLogs.slice(5);
+
+                            qrHistoryHtml = visibleLogs.map(log => `<li><strong>${log.time}</strong> - ${log.method}</li>`).join('');
+                            
+                            if (hiddenLogs.length > 0) {
+                                let hiddenList = hiddenLogs.map(log => `<li><strong>${log.time}</strong> - ${log.method}</li>`).join('');
+                                qrHistoryHtml += `<ul class="hidden-logs" id="hidden-logs-${index}">${hiddenList}</ul>`;
+                                qrHistoryHtml += `<button class="toggle-logs-btn" data-target="hidden-logs-${index}" data-state="collapsed">
+                                                    <i class="fas fa-plus-circle"></i> Mở rộng (${hiddenLogs.length})
+                                                  </button>`;
+                            }
+                        } else {
+                             qrHistoryHtml = '<li>Không có lịch sử quét QR.</li>';
+                        }
+
+                        return `
+                            <div class="result-item">
+                                <div class="result-header">
+                                    <h4>Phiếu bảo hành: <span class="service-code">${item.serviceCode || 'N/A'}</span></h4>
+                                    ${statusHtml}
+                                </div>
+                                
+                                <h3><i class="fas fa-user-check"></i> Thông Tin Khách Hàng</h3>
+                                <p><strong>Tên:</strong> ${item.Name || 'Không có'}</p>
+                                <p><strong>SĐT:</strong> ${item.contact?.phone || 'Không có'}</p>
+
+                                <h3><i class="fas fa-info-circle"></i> Chi Tiết Dịch Vụ</h3>
+                                <p><strong>Lỗi xử lý:</strong> ${item.processingError || 'Không có'}</p>
+                                <p><strong>Phương án xử lý:</strong> ${item.treatmentPlan || 'Không có'}</p>
+                                <p><strong>Ghi chú thêm:</strong> ${item.note || 'Không có'}</p>
+
+                                <h3><i class="fas fa-calendar-alt"></i> Thời Hạn Bảo Hành</h3>
+                                <p><strong>Ngày kích hoạt:</strong> ${item.date ? item.date.split('-').reverse().join('/') : 'N/A'}</p>
+                                <p><strong>Ngày hết hạn:</strong> ${item.endDate || 'N/A'}</p>
+                                <p><strong>Thời gian:</strong> ${item.duration || 'N/A'} tháng</p>
+
+                                <h3><i class="fas fa-qrcode"></i> Lịch Sử Quét QR (QRCoder)</h3>
+                                <ul class="log-history">${qrHistoryHtml}</ul>
+                            </div>
+                        `;
+                    }).join('');
+                    
+                    resultDiv.innerHTML = resultsHtml;
+
                 } else {
-                    hiddenLogs.style.display = 'none';
-                    button.setAttribute('data-state', 'collapsed');
-                    const hiddenCount = hiddenLogs.children.length;
-                    button.innerHTML = `<i class="fas fa-plus-circle"></i> Mở rộng (${hiddenCount})`;
+                    resultDiv.className = 'lookup-result error';
+                    resultDiv.innerHTML = '<p>Không tìm thấy thông tin bảo hành cho mã bạn đã nhập.</p>';
+                }
+            } catch (error) {
+                resultDiv.className = 'lookup-result error';
+                resultDiv.innerHTML = '<p>Có lỗi xảy ra khi kết nối tới máy chủ.</p>';
+                console.error('Fetch Error:', error);
+            } finally {
+                searchButton.disabled = false;
+                searchButton.innerHTML = 'KIỂM TRA NGAY';
+            }
+        };
+
+        searchButton.addEventListener('click', () => handleSearch());
+        searchInput.addEventListener('keyup', (event) => {
+            if (event.key === 'Enter') handleSearch();
+        });
+        
+        // --- CẬP NHẬT: Logic cho nút Mở rộng/Thu gọn ---
+        resultDiv.addEventListener('click', function(event) {
+            const button = event.target.closest('.toggle-logs-btn');
+            if (button) {
+                const targetId = button.getAttribute('data-target');
+                const hiddenLogs = document.getElementById(targetId);
+                const currentState = button.getAttribute('data-state');
+
+                if (hiddenLogs) {
+                    if (currentState === 'collapsed') {
+                        hiddenLogs.style.display = 'block';
+                        button.setAttribute('data-state', 'expanded');
+                        button.innerHTML = '<i class="fas fa-minus-circle"></i> Thu gọn';
+                    } else {
+                        hiddenLogs.style.display = 'none';
+                        button.setAttribute('data-state', 'collapsed');
+                        const hiddenCount = hiddenLogs.children.length;
+                        button.innerHTML = `<i class="fas fa-plus-circle"></i> Mở rộng (${hiddenCount})`;
+                    }
                 }
             }
-        }
-    });
-    
-    // --- CẬP NHẬT: Logic tự động tìm kiếm ---
-    // Tạo một hàm riêng để kiểm tra URL và chạy
-    function autoSearchOnLoad() {
-        const params = new URLSearchParams(window.location.search);
-        const keywordFromUrl = params.get('keyword');
-        const methodFromUrl = params.get('Method');
+        });
 
-        if (keywordFromUrl && methodFromUrl === 'QRCoder') {
-            searchInput.value = keywordFromUrl;
-            handleSearch(methodFromUrl);
-        }
-    }
+        document.addEventListener('DOMContentLoaded', () => {
+            const params = new URLSearchParams(window.location.search);
+            const keywordFromUrl = params.get('keyword');
+            const methodFromUrl = params.get('method');
 
-    // Gọi hàm này ngay sau khi tất cả các hàm và biến đã được định nghĩa
-    autoSearchOnLoad();
-
-</script>
+            if (keywordFromUrl && methodFromUrl === 'QRCoder') {
+                searchInput.value = keywordFromUrl;
+                handleSearch(methodFromUrl);
+            }
+        });
+    </script>
     
     <style>
         .lookup-result h3 { font-size: 18px; color: var(--primary-color); margin-top: 25px; margin-bottom: 10px; padding-bottom: 5px; border-bottom: 1px solid #eee; }
