@@ -105,9 +105,7 @@
                 if (Array.isArray(data) && data.length > 0) {
                     resultDiv.className = 'lookup-result success';
                     
-                    // Duyệt qua tất cả kết quả và tạo HTML
                     const resultsHtml = data.map((item, index) => {
-                        // --- Logic tính trạng thái bảo hành ---
                         const parseVNDate = (dateStr) => {
                             if (!dateStr || !dateStr.includes('/')) return null;
                             const [day, month, year] = dateStr.split('/');
@@ -117,7 +115,7 @@
                         let statusHtml = '<span class="status-unknown">Không xác định</span>';
                         if (endDate) {
                             const today = new Date();
-                            today.setHours(0, 0, 0, 0); // Chuẩn hóa về đầu ngày
+                            today.setHours(0, 0, 0, 0);
                             if (endDate >= today) {
                                 statusHtml = '<span class="status-active">Còn hạn</span>';
                             } else {
@@ -125,24 +123,28 @@
                             }
                         }
 
-                        // --- Logic rút gọn lịch sử QR ---
-                        let qrHistoryHtml = '<li>Không có lịch sử.</li>';
-                        const fullHistory = item.log?.QRCheckHistory || [];
-                        if (fullHistory.length > 0) {
-                            const visibleHistory = fullHistory.slice(0, 5);
-                            const hiddenHistory = fullHistory.slice(5);
+                        // --- CẬP NHẬT: Lọc và tạo lịch sử QR ---
+                        let qrHistoryHtml = '';
+                        const allLogs = item.log?.QRCheckHistory || [];
+                        const filteredLogs = allLogs.filter(log => log.method === 'QRCoder');
 
-                            qrHistoryHtml = visibleHistory.map(log => `<li><strong>${log.time}</strong> - ${log.method}</li>`).join('');
+                        if (filteredLogs.length > 0) {
+                            const visibleLogs = filteredLogs.slice(0, 5);
+                            const hiddenLogs = filteredLogs.slice(5);
+
+                            qrHistoryHtml = visibleLogs.map(log => `<li><strong>${log.time}</strong> - ${log.method}</li>`).join('');
                             
-                            if (hiddenHistory.length > 0) {
-                                qrHistoryHtml += `<ul class="hidden-logs" id="hidden-logs-${index}">`;
-                                qrHistoryHtml += hiddenHistory.map(log => `<li><strong>${log.time}</strong> - ${log.method}</li>`).join('');
-                                qrHistoryHtml += '</ul>';
-                                qrHistoryHtml += `<button class="show-more-btn" data-target="hidden-logs-${index}">Xem thêm ${hiddenHistory.length} lần quét</button>`;
+                            if (hiddenLogs.length > 0) {
+                                let hiddenList = hiddenLogs.map(log => `<li><strong>${log.time}</strong> - ${log.method}</li>`).join('');
+                                qrHistoryHtml += `<ul class="hidden-logs" id="hidden-logs-${index}">${hiddenList}</ul>`;
+                                qrHistoryHtml += `<button class="toggle-logs-btn" data-target="hidden-logs-${index}" data-state="collapsed">
+                                                    <i class="fas fa-plus-circle"></i> Mở rộng (${hiddenLogs.length})
+                                                  </button>`;
                             }
+                        } else {
+                             qrHistoryHtml = '<li>Không có lịch sử quét QR.</li>';
                         }
 
-                        // --- Ghép chuỗi HTML cho mỗi kết quả ---
                         return `
                             <div class="result-item">
                                 <div class="result-header">
@@ -157,13 +159,14 @@
                                 <h3><i class="fas fa-info-circle"></i> Chi Tiết Dịch Vụ</h3>
                                 <p><strong>Lỗi xử lý:</strong> ${item.processingError || 'Không có'}</p>
                                 <p><strong>Phương án xử lý:</strong> ${item.treatmentPlan || 'Không có'}</p>
+                                <p><strong>Ghi chú thêm:</strong> ${item.note || 'Không có'}</p>
 
                                 <h3><i class="fas fa-calendar-alt"></i> Thời Hạn Bảo Hành</h3>
                                 <p><strong>Ngày kích hoạt:</strong> ${item.date ? item.date.split('-').reverse().join('/') : 'N/A'}</p>
                                 <p><strong>Ngày hết hạn:</strong> ${item.endDate || 'N/A'}</p>
                                 <p><strong>Thời gian:</strong> ${item.duration || 'N/A'} tháng</p>
 
-                                <h3><i class="fas fa-qrcode"></i> Lịch Sử Quét QR</h3>
+                                <h3><i class="fas fa-qrcode"></i> Lịch Sử Quét QR (QRCoder)</h3>
                                 <ul class="log-history">${qrHistoryHtml}</ul>
                             </div>
                         `;
@@ -190,14 +193,25 @@
             if (event.key === 'Enter') handleSearch();
         });
         
-        // --- Logic mới cho nút "Xem thêm" ---
+        // --- CẬP NHẬT: Logic cho nút Mở rộng/Thu gọn ---
         resultDiv.addEventListener('click', function(event) {
-            if (event.target && event.target.classList.contains('show-more-btn')) {
-                const targetId = event.target.getAttribute('data-target');
+            const button = event.target.closest('.toggle-logs-btn');
+            if (button) {
+                const targetId = button.getAttribute('data-target');
                 const hiddenLogs = document.getElementById(targetId);
+                const currentState = button.getAttribute('data-state');
+
                 if (hiddenLogs) {
-                    hiddenLogs.classList.add('visible');
-                    event.target.style.display = 'none'; // Ẩn nút sau khi bấm
+                    if (currentState === 'collapsed') {
+                        hiddenLogs.style.display = 'block';
+                        button.setAttribute('data-state', 'expanded');
+                        button.innerHTML = '<i class="fas fa-minus-circle"></i> Thu gọn';
+                    } else {
+                        hiddenLogs.style.display = 'none';
+                        button.setAttribute('data-state', 'collapsed');
+                        const hiddenCount = hiddenLogs.children.length;
+                        button.innerHTML = `<i class="fas fa-plus-circle"></i> Mở rộng (${hiddenCount})`;
+                    }
                 }
             }
         });
@@ -221,55 +235,25 @@
         .log-history { list-style-type: none; padding-left: 0; }
         .log-history li { background-color: #f8f9fa; padding: 8px 12px; border-radius: 4px; margin-bottom: 5px; font-size: 14px; }
         
-        /* === CSS MỚI === */
-        .result-item {
-            border: 1px solid #e9ecef;
-            border-radius: 8px;
-            padding: 20px;
-            margin-top: 20px;
-            background-color: #fff;
-        }
-        .result-item:first-child {
-            margin-top: 0;
-        }
-        .result-header {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            margin-bottom: 20px;
-            padding-bottom: 15px;
-            border-bottom: 2px solid #f1f3f5;
-        }
-        .result-header h4 {
-            margin: 0;
-            font-size: 16px;
-        }
-        .result-header .service-code {
-            font-size: 16px;
-        }
+        .result-item { border: 1px solid #e9ecef; border-radius: 8px; padding: 20px; margin-top: 20px; background-color: #fff; }
+        .result-item:first-child { margin-top: 0; }
+        .result-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px; padding-bottom: 15px; border-bottom: 2px solid #f1f3f5; }
+        .result-header h4 { margin: 0; font-size: 16px; }
+        .result-header .service-code { font-size: 16px; }
         
-        /* Trạng thái bảo hành */
-        .status-active, .status-expired, .status-unknown {
-            font-weight: bold;
-            padding: 5px 12px;
-            border-radius: 20px;
-            font-size: 14px;
-            color: #fff;
-        }
+        .status-active, .status-expired, .status-unknown { font-weight: bold; padding: 5px 12px; border-radius: 20px; font-size: 14px; color: #fff; }
         .status-active { background-color: #28a745; }
         .status-expired { background-color: #dc3545; }
         .status-unknown { background-color: #6c757d; }
         
-        /* Nút xem thêm */
+        /* === CSS MỚI === */
         .hidden-logs {
             display: none;
-            padding-left: 0; /* Ghi đè style mặc định của ul */
-            list-style: none; /* Ghi đè style mặc định của ul */
+            padding-left: 0;
+            list-style: none;
+            margin-top: 5px;
         }
-        .hidden-logs.visible {
-            display: block;
-        }
-        .show-more-btn {
+        .toggle-logs-btn {
             background-color: #e9ecef;
             border: none;
             color: #495057;
@@ -278,9 +262,13 @@
             cursor: pointer;
             margin-top: 10px;
             font-size: 13px;
+            font-weight: 500;
             transition: background-color 0.2s;
+            display: inline-flex;
+            align-items: center;
+            gap: 5px;
         }
-        .show-more-btn:hover {
+        .toggle-logs-btn:hover {
             background-color: #dee2e6;
         }
     </style>
