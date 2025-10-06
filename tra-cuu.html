@@ -219,7 +219,7 @@
         document.addEventListener('DOMContentLoaded', () => {
             const params = new URLSearchParams(window.location.search);
             const keywordFromUrl = params.get('keyword');
-            const methodFromUrl = params.get('method');
+            var methodFromUrl = params.get('method');
             if(methodFromUrl != 'QRCoder'){
                 methodFromUrl = params.get('Method');
             }
