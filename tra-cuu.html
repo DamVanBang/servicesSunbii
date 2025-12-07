@@ -1,131 +1,131 @@
 <!DOCTYPE html>
 <html lang="vi">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Tra Cứu Bảo Hành - SUNBII Services</title>
-    
-    <meta name="description" content="Tra cứu thông tin bảo hành dịch vụ của SUNBII Services nhanh chóng và chính xác.">
-    <meta name="author" content="Đàm Văn Bằng">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Tra Cứu Bảo Hành - SUNBII Services</title>
+    
+    <meta name="description" content="Tra cứu thông tin bảo hành dịch vụ của SUNBII Services nhanh chóng và chính xác.">
+    <meta name="author" content="Đàm Văn Bằng">
 
-    <link rel="stylesheet" href="style.css">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 </head>
 <body>
-    <header class="header">
-        <div class="container">
-            <div class="logo">
-                <a href="index.html">SUNBII <span>Services</span></a>
-            </div>
-            <nav class="main-nav">
-                <ul>
-                    <li><a href="index.html">Trang Chủ</a></li>
-                    <li><a href="tra-cuu.html" class="active">Tra Cứu Bảo Hành</a></li>
-                    <li><a href="dich-vu.html">Dịch Vụ</a></li>
-                    <li><a href="#">Liên Hệ</a></li>
-                </ul>
-            </nav>
-            <button class="mobile-menu-button" aria-label="Mở menu">
-                <i class="fas fa-bars"></i>
-            </button>
-        </div>
-    </header>
+    <header class="header">
+        <div class="container">
+            <div class="logo">
+                <a href="index.html">SUNBII <span>Services</span></a>
+            </div>
+            <nav class="main-nav">
+                <ul>
+                    <li><a href="index.html">Trang Chủ</a></li>
+                    <li><a href="tra-cuu.html" class="active">Tra Cứu Bảo Hành</a></li>
+                    <li><a href="dich-vu.html">Dịch Vụ</a></li>
+                    <li><a href="#">Liên Hệ</a></li>
+                </ul>
+            </nav>
+            <button class="mobile-menu-button" aria-label="Mở menu">
+                <i class="fas fa-bars"></i>
+            </button>
+        </div>
+    </header>
 
-    <main class="main-content">
-        <div class="container page-container">
-            <div class="lookup-card">
-                <div class="lookup-header">
-                    <i class="fas fa-shield-alt"></i>
-                    <h1>TRA CỨU THÔNG TIN BẢO HÀNH</h1>
-                    <p>Vui lòng nhập mã dịch vụ, SĐT hoặc Email để kiểm tra</p>
-                </div>
-                <div class="lookup-form">
-                    <div class="input-group">
-                        <i class="fas fa-search"></i>
-                        <input type="text" id="searchInput" placeholder="Nhập thông tin tra cứu..." required>
-                    </div>
-                    <button id="searchButton">KIỂM TRA NGAY</button>
-                </div>
-                <div id="result" class="lookup-result">
-                    </div>
-            </div>
-        </div>
-    </main>
+    <main class="main-content">
+        <div class="container page-container">
+            <div class="lookup-card">
+                <div class="lookup-header">
+                    <i class="fas fa-shield-alt"></i>
+                    <h1>TRA CỨU THÔNG TIN BẢO HÀNH</h1>
+                    <p>Vui lòng nhập mã dịch vụ, SĐT hoặc Email để kiểm tra</p>
+                </div>
+                <div class="lookup-form">
+                    <div class="input-group">
+                        <i class="fas fa-search"></i>
+                        <input type="text" id="searchInput" placeholder="Nhập thông tin tra cứu..." required>
+                    </div>
+                    <button id="searchButton">KIỂM TRA NGAY</button>
+                </div>
+                <div id="result" class="lookup-result">
+                    </div>
+            </div>
+        </div>
+    </main>
 
-    <footer class="footer">
-        <div class="container">
-            <p>&copy; 2025 SUNBII Services. All rights reserved.</p>
-            <div class="social-links">
-                <a href="https://fb.com/damvanbang2006" target="_blank"><i class="fab fa-facebook-f"></i></a>
-                <a href="https://instargram.com/damvanbang2006" target="_blank"><i class="fab fa-instagram"></i></a>
-                <a href="#"><i class="fab fa-youtube"></i></a>
-            </div>
-        </div>
-    </footer>
-    
-    <script>
-        // --- Script cho menu mobile ---
-        const menuButton = document.querySelector('.mobile-menu-button');
-        const navMenu = document.querySelector('.main-nav');
-        menuButton.addEventListener('click', () => {
-            navMenu.classList.toggle('active');
-            const icon = menuButton.querySelector('i');
-            icon.classList.toggle('fa-bars');
-            icon.classList.toggle('fa-times');
-        });
+    <footer class="footer">
+        <div class="container">
+            <p>&copy; 2025 SUNBII Services. All rights reserved.</p>
+            <div class="social-links">
+                <a href="https://fb.com/damvanbang2006" target="_blank"><i class="fab fa-facebook-f"></i></a>
+                <a href="https://instargram.com/damvanbang2006" target="_blank"><i class="fab fa-instagram"></i></a>
+                <a href="#"><i class="fab fa-youtube"></i></a>
+            </div>
+        </div>
+    </footer>
+    
+    <script>
+        // --- Script cho menu mobile ---
+        const menuButton = document.querySelector('.mobile-menu-button');
+        const navMenu = document.querySelector('.main-nav');
+        menuButton.addEventListener('click', () => {
+            navMenu.classList.toggle('active');
+            const icon = menuButton.querySelector('i');
+            icon.classList.toggle('fa-bars');
+            icon.classList.toggle('fa-times');
+        });
 
-        // --- Script cho chức năng tra cứu ---
-        const searchButton = document.getElementById('searchButton');
-        const searchInput = document.getElementById('searchInput');
-        const resultDiv = document.getElementById('result');
-        
-        const handleSearch = async (method = null) => {
-            const keyword = searchInput.value.trim();
-            resultDiv.innerHTML = '';
-            resultDiv.className = 'lookup-result';
+        // --- Script cho chức năng tra cứu ---
+        const searchButton = document.getElementById('searchButton');
+        const searchInput = document.getElementById('searchInput');
+        const resultDiv = document.getElementById('result');
+        
+        const handleSearch = async (method = null) => {
+            const keyword = searchInput.value.trim();
+            resultDiv.innerHTML = '';
+            resultDiv.className = 'lookup-result';
 
-            if (keyword === '') {
-                resultDiv.className = 'lookup-result error';
-                resultDiv.innerHTML = '<p>Vui lòng nhập thông tin cần tra cứu.</p>';
-                return;
-            }
+            if (keyword === '') {
+                resultDiv.className = 'lookup-result error';
+                resultDiv.innerHTML = '<p>Vui lòng nhập thông tin cần tra cứu.</p>';
+                return;
+            }
 
-            searchButton.disabled = true;
-            searchButton.innerHTML = '<i class="fas fa-spinner fa-spin"></i> ĐANG TÌM KIẾM...';
-            
-            // <<< ĐÃ SỬA LỖI TẠI ĐÂY: DÙNG API CHÍNH XÁC >>>
-            let apiUrl = `https://apitest.sunbii.vn/api/servicesCheck?type=auto&keyword=${encodeURIComponent(keyword)}`;
-            if (method) {
-                apiUrl += `&Method=${encodeURIComponent(method)}`;
-            }
+            searchButton.disabled = true;
+            searchButton.innerHTML = '<i class="fas fa-spinner fa-spin"></i> ĐANG TÌM KIẾM...';
+            
+            // <<< ĐÃ SỬA LỖI TẠI ĐÂY: DÙNG API CHÍNH XÁC >>>
+            let apiUrl = `https://apitest.sunbii.vn/api/servicesCheck?type=auto&keyword=${encodeURIComponent(keyword)}`;
+            if (method) {
+                apiUrl += `&Method=${encodeURIComponent(method)}`;
+            }
 
-            try {
-                const response = await fetch(apiUrl);
+            try {
+                const response = await fetch(apiUrl);
                 if (!response.ok) {
                     throw new Error(`HTTP error! status: ${response.status}`);
                 }
-                const data = await response.json();
-                
-                if (Array.isArray(data) && data.length > 0) {
-                    resultDiv.className = 'lookup-result success';
-                    
-                    const resultsHtml = data.map((item, index) => {
-                        const parseVNDate = (dateStr) => {
-                            if (!dateStr || !dateStr.includes('/')) return null;
-                            const [day, month, year] = dateStr.split('/');
-                            return new Date(`${year}-${month}-${day}`);
-                        };
-                        const endDate = parseVNDate(item.endDate);
-                        let statusHtml = '<span class="status-unknown">Không xác định</span>';
-                        if (endDate) {
-                            const today = new Date();
-                            today.setHours(0, 0, 0, 0);
-                            if (endDate >= today) {
-                                statusHtml = '<span class="status-active">Còn hạn</span>';
-                            } else {
-                                statusHtml = '<span class="status-expired">Hết hạn</span>';
-                            }
-                        }
+                const data = await response.json();
+                
+                if (Array.isArray(data) && data.length > 0) {
+                    resultDiv.className = 'lookup-result success';
+                    
+                    const resultsHtml = data.map((item, index) => {
+                        const parseVNDate = (dateStr) => {
+                            if (!dateStr || !dateStr.includes('/')) return null;
+                            const [day, month, year] = dateStr.split('/');
+                            return new Date(`${year}-${month}-${day}`);
+                        };
+                        const endDate = parseVNDate(item.endDate);
+                        let statusHtml = '<span class="status-unknown">Không xác định</span>';
+                        if (endDate) {
+                            const today = new Date();
+                            today.setHours(0, 0, 0, 0);
+                            if (endDate >= today) {
+                                statusHtml = '<span class="status-active">Còn hạn</span>';
+                            } else {
+                                statusHtml = '<span class="status-expired">Hết hạn</span>';
+                            }
+                        }
 
                         // --- LOGIC XỬ LÝ TRƯỜNG LỖI/SẢN PHẨM & PHƯƠNG ÁN XỬ LÝ (GIỮ NGUYÊN) ---
                         const isBuyGroup = item.processingError && item.processingError.toUpperCase() === 'NO';
@@ -140,72 +140,72 @@
                             : `<p><strong>Phương án xử lý:</strong> ${item.treatmentPlan || 'Không có'}</p>`;
                         // --------------------------------------------------------------------------
                         
-                        // --- Lọc và tạo lịch sử QR ---
-                        let qrHistoryHtml = '';
-                        const allLogs = item.log?.QRCheckHistory || [];
-                        const filteredLogs = allLogs.filter(log => log.method === 'QRCoder');
+                        // --- Lọc và tạo lịch sử QR ---
+                        let qrHistoryHtml = '';
+                        const allLogs = item.log?.QRCheckHistory || [];
+                        const filteredLogs = allLogs.filter(log => log.method === 'QRCoder');
 
-                        if (filteredLogs.length > 0) {
-                            const visibleLogs = filteredLogs.slice(0, 5);
-                            const hiddenLogs = filteredLogs.slice(5);
+                        if (filteredLogs.length > 0) {
+                            const visibleLogs = filteredLogs.slice(0, 5);
+                            const hiddenLogs = filteredLogs.slice(5);
 
-                            qrHistoryHtml = visibleLogs.map(log => `<li><strong>${log.time}</strong> - ${log.method}</li>`).join('');
-                            
-                            if (hiddenLogs.length > 0) {
-                                let hiddenList = hiddenLogs.map(log => `<li><strong>${log.time}</strong> - ${log.method}</li>`).join('');
-                                qrHistoryHtml += `<ul class="hidden-logs" id="hidden-logs-${index}">${hiddenList}</ul>`;
-                                qrHistoryHtml += `<button class="toggle-logs-btn" data-target="hidden-logs-${index}" data-state="collapsed">
-                                                    <i class="fas fa-plus-circle"></i> Mở rộng (${hiddenLogs.length})
-                                                  </button>`;
-                            }
-                        } else {
-                             qrHistoryHtml = '<li>Không có lịch sử quét QR.</li>';
-                        }
+                            qrHistoryHtml = visibleLogs.map(log => `<li><strong>${log.time}</strong> - ${log.method}</li>`).join('');
+                            
+                            if (hiddenLogs.length > 0) {
+                                let hiddenList = hiddenLogs.map(log => `<li><strong>${log.time}</strong> - ${log.method}</li>`).join('');
+                                qrHistoryHtml += `<ul class="hidden-logs" id="hidden-logs-${index}">${hiddenList}</ul>`;
+                                qrHistoryHtml += `<button class="toggle-logs-btn" data-target="hidden-logs-${index}" data-state="collapsed">
+                                                    <i class="fas fa-plus-circle"></i> Mở rộng (${hiddenLogs.length})
+                                                  </button>`;
+                            }
+                        } else {
+                             qrHistoryHtml = '<li>Không có lịch sử quét QR.</li>';
+                        }
 
-                        return `
-                            <div class="result-item">
-                                <div class="result-header">
-                                    <h4>Phiếu bảo hành: <span class="service-code">${item.serviceCode || 'N/A'}</span></h4>
-                                    ${statusHtml}
-                                </div>
-                                
-                                <h3><i class="fas fa-user-check"></i> Thông Tin Khách Hàng</h3>
-                                <p><strong>Tên:</strong> ${item.Name || 'Không có'}</p>
-                                <p><strong>SĐT:</strong> ${item.contact?.phone || 'Không có'}</p>
+                        return `
+                            <div class="result-item">
+                                <div class="result-header">
+                                    <h4>Phiếu bảo hành: <span class="service-code">${item.serviceCode || 'N/A'}</span></h4>
+                                    ${statusHtml}
+                                </div>
+                                
+                                <h3><i class="fas fa-user-check"></i> Thông Tin Khách Hàng</h3>
+                                <p><strong>Tên:</strong> ${item.Name || 'Không có'}</p>
+                                <p><strong>SĐT:</strong> ${item.contact?.phone || 'Không có'}</p>
 
-                                <h3><i class="fas fa-info-circle"></i> Chi Tiết Dịch Vụ</h3>
-                                <p><strong>${detailHeader}</strong> ${detailValue}</p>
+                                <h3><i class="fas fa-info-circle"></i> Chi Tiết Dịch Vụ</h3>
+                                <p><strong>${detailHeader}</strong> ${detailValue}</p>
                                 ${treatmentPlanHtml} 
-                                <p><strong>Ghi chú thêm:</strong> ${item.note || 'Không có'}</p>
+                                <p><strong>Ghi chú thêm:</strong> ${item.note || 'Không có'}</p>
 
-                                <h3><i class="fas fa-calendar-alt"></i> Thời Hạn Bảo Hành</h3>
-                                <p><strong>Ngày kích hoạt:</strong> ${item.date ? item.date.split('-').reverse().join('/') : 'N/A'}</p>
-                                <p><strong>Ngày hết hạn:</strong> ${item.endDate || 'N/A'}</p>
-                                <p><strong>Thời gian:</strong> ${item.duration || 'N/A'} tháng</p>
+                                <h3><i class="fas fa-calendar-alt"></i> Thời Hạn Bảo Hành</h3>
+                                <p><strong>Ngày kích hoạt:</strong> ${item.date ? item.date.split('-').reverse().join('/') : 'N/A'}</p>
+                                <p><strong>Ngày hết hạn:</strong> ${item.endDate || 'N/A'}</p>
+                                <p><strong>Thời gian:</strong> ${item.duration || 'N/A'} tháng</p>
 
-                                <h3><i class="fas fa-qrcode"></i> Lịch Sử Quét QR (QRCoder)</h3>
-                                <ul class="log-history">${qrHistoryHtml}</ul>
-                            </div>
-                        `;
-                    }).join('');
-                    
-                    resultDiv.innerHTML = resultsHtml;
+                                <h3><i class="fas fa-qrcode"></i> Lịch Sử Quét QR (QRCoder)</h3>
+                                <ul class="log-history">${qrHistoryHtml}</ul>
+                            </div>
+                        `;
+                    }).join('');
+                    
+                    resultDiv.innerHTML = resultsHtml;
 
                     addToggleListeners();
 
-                } else {
-                    resultDiv.className = 'lookup-result error';
-                    resultDiv.innerHTML = '<p>Không tìm thấy thông tin bảo hành cho mã bạn đã nhập.</p>';
-                }
-            } catch (error) {
-                resultDiv.className = 'lookup-result error';
-                resultDiv.innerHTML = `<p>Có lỗi xảy ra khi kết nối tới máy chủ hoặc API không phản hồi (Lỗi: ${error.message}).</p>`;
-                console.error('Fetch Error:', error);
-            } finally {
-                searchButton.disabled = false;
-                searchButton.innerHTML = 'KIỂM TRA NGAY';
-            }
-        };
+                } else {
+                    resultDiv.className = 'lookup-result error';
+                    resultDiv.innerHTML = '<p>Không tìm thấy thông tin bảo hành cho mã bạn đã nhập.</p>';
+                }
+            } catch (error) {
+                resultDiv.className = 'lookup-result error';
+                resultDiv.innerHTML = `<p>Có lỗi xảy ra khi kết nối tới máy chủ hoặc API không phản hồi (Lỗi: ${error.message}).</p>`;
+                console.error('Fetch Error:', error);
+            } finally {
+                searchButton.disabled = false;
+                searchButton.innerHTML = 'KIỂM TRA NGAY';
+            }
+        };
 
         function addToggleListeners() {
             const resultDiv = document.getElementById('result');
@@ -236,71 +236,71 @@
         };
 
 
-        searchButton.addEventListener('click', () => handleSearch());
-        searchInput.addEventListener('keyup', (event) => {
-            if (event.key === 'Enter') handleSearch();
-        });
-        
-        document.addEventListener('DOMContentLoaded', () => {
-            const params = new URLSearchParams(window.location.search);
-            const keywordFromUrl = params.get('keyword');
-            var methodFromUrl = params.get('method');
-            if(methodFromUrl != 'QRCoder'){
-                methodFromUrl = params.get('Method');
-            }
-            if (keywordFromUrl && methodFromUrl === 'QRCoder') {
-                searchInput.value = keywordFromUrl;
-                handleSearch(methodFromUrl);
-            }
-        });
-    </script>
-    
-    <style>
-        .lookup-result h3 { font-size: 18px; color: var(--primary-color); margin-top: 25px; margin-bottom: 10px; padding-bottom: 5px; border-bottom: 1px solid #eee; }
-        .lookup-result p { line-height: 1.8; font-size: 15px;}
-        .service-code { font-family: 'Courier New', monospace; background-color: #f0f0f0; padding: 2px 6px; border-radius: 4px; font-weight: bold; }
-        .log-history { list-style-type: none; padding-left: 0; }
-        .log-history li { background-color: #f8f9fa; padding: 8px 12px; border-radius: 4px; margin-bottom: 5px; font-size: 14px; }
-        
-        .result-item { border: 1px solid #e9ecef; border-radius: 8px; padding: 20px; margin-top: 20px; background-color: #fff; }
-        .result-item:first-child { margin-top: 0; }
-        .result-header { display: flex; flex-wrap: wrap; justify-content: space-between; align-items: center; margin-bottom: 20px; padding-bottom: 15px; border-bottom: 2px solid #f1f3f5; }
-        .result-header h4 { margin: 0; font-size: 16px; }
-        .result-header .service-code { font-size: 16px; }
-        
-        .status-active, .status-expired, .status-unknown { font-weight: bold; padding: 5px 12px; border-radius: 20px; font-size: 14px; color: #fff; }
-        .status-active { background-color: #28a745; }
-        .status-expired { background-color: #dc3545; }
-        .status-unknown { background-color: #6c757d; }
-        
-        /* === CSS MỚI === */
-        .hidden-detail { 
+        searchButton.addEventListener('click', () => handleSearch());
+        searchInput.addEventListener('keyup', (event) => {
+            if (event.key === 'Enter') handleSearch();
+        });
+        
+        document.addEventListener('DOMContentLoaded', () => {
+            const params = new URLSearchParams(window.location.search);
+            const keywordFromUrl = params.get('keyword');
+            var methodFromUrl = params.get('method');
+            if(methodFromUrl != 'QRCoder'){
+                methodFromUrl = params.get('Method');
+            }
+            if (keywordFromUrl && methodFromUrl === 'QRCoder') {
+                searchInput.value = keywordFromUrl;
+                handleSearch(methodFromUrl);
+            }
+        });
+    </script>
+    
+    <style>
+        .lookup-result h3 { font-size: 18px; color: var(--primary-color); margin-top: 25px; margin-bottom: 10px; padding-bottom: 5px; border-bottom: 1px solid #eee; }
+        .lookup-result p { line-height: 1.8; font-size: 15px;}
+        .service-code { font-family: 'Courier New', monospace; background-color: #f0f0f0; padding: 2px 6px; border-radius: 4px; font-weight: bold; }
+        .log-history { list-style-type: none; padding-left: 0; }
+        .log-history li { background-color: #f8f9fa; padding: 8px 12px; border-radius: 4px; margin-bottom: 5px; font-size: 14px; }
+        
+        .result-item { border: 1px solid #e9ecef; border-radius: 8px; padding: 20px; margin-top: 20px; background-color: #fff; }
+        .result-item:first-child { margin-top: 0; }
+        .result-header { display: flex; flex-wrap: wrap; justify-content: space-between; align-items: center; margin-bottom: 20px; padding-bottom: 15px; border-bottom: 2px solid #f1f3f5; }
+        .result-header h4 { margin: 0; font-size: 16px; }
+        .result-header .service-code { font-size: 16px; }
+        
+        .status-active, .status-expired, .status-unknown { font-weight: bold; padding: 5px 12px; border-radius: 20px; font-size: 14px; color: #fff; }
+        .status-active { background-color: #28a745; }
+        .status-expired { background-color: #dc3545; }
+        .status-unknown { background-color: #6c757d; }
+        
+        /* === CSS MỚI === */
+        .hidden-detail { 
             /* Để 'Không áp dụng' không bị ẩn, giữ nguyên */
         }
-        .hidden-logs {
-            display: none;
-            padding-left: 0;
-            list-style: none;
-            margin-top: 5px;
-        }
-        .toggle-logs-btn {
-            background-color: #e9ecef;
-            border: none;
-            color: #495057;
-            padding: 8px 15px;
-            border-radius: 5px;
-            cursor: pointer;
-            margin-top: 10px;
-            font-size: 13px;
-            font-weight: 500;
-            transition: background-color 0.2s;
-            display: inline-flex;
-            align-items: center;
-            gap: 5px;
-        }
-        .toggle-logs-btn:hover {
-            background-color: #dee2e6;
-        }
-    </style>
+        .hidden-logs {
+            display: none;
+            padding-left: 0;
+            list-style: none;
+            margin-top: 5px;
+        }
+        .toggle-logs-btn {
+            background-color: #e9ecef;
+            border: none;
+            color: #495057;
+            padding: 8px 15px;
+            border-radius: 5px;
+            cursor: pointer;
+            margin-top: 10px;
+            font-size: 13px;
+            font-weight: 500;
+            transition: background-color 0.2s;
+            display: inline-flex;
+            align-items: center;
+            gap: 5px;
+        }
+        .toggle-logs-btn:hover {
+            background-color: #dee2e6;
+        }
+    </style>
 </body>
 </html>
