@@ -94,7 +94,7 @@
             searchButton.innerHTML = '<i class="fas fa-spinner fa-spin"></i> ĐANG TÌM KIẾM...';
             
             // <<< ĐÃ SỬA LỖI TẠI ĐÂY: DÙNG API CHÍNH XÁC >>>
-            let apiUrl = `https://apitest.sunbii.vn/api/servicesCheck?type=auto&keyword=${encodeURIComponent(keyword)}`;
+            let apiUrl = `https://api.sunbii.vn/api/servicesCheck?type=auto&keyword=${encodeURIComponent(keyword)}`;
             if (method) {
                 apiUrl += `&Method=${encodeURIComponent(method)}`;
             }
