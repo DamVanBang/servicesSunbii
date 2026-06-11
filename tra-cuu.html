@@ -7,8 +7,43 @@
     <meta name="description" content="Tra cứu thông tin bảo hành dịch vụ của SUNBII Services nhanh chóng và chính xác.">
     <meta name="author" content="Đàm Văn Bằng">
     <link rel="icon" href="favicon.ico">
+    
     <link rel="stylesheet" href="style.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <style>
+        /* Bổ sung CSS cho phần Lịch sử QR hiển thị trên Dark Theme */
+        .log-history { list-style: none; padding: 0; margin-top: 10px; }
+        .log-history li { 
+            background-color: var(--bg-card); padding: 10px 15px; 
+            border-radius: 8px; margin-bottom: 8px; font-size: 0.9rem; 
+            border: 1px solid var(--border-color); color: var(--text-muted); 
+        }
+        .log-history li strong { color: var(--text-main); }
+        .hidden-logs { display: none; margin-top: 8px; padding: 0; list-style: none;}
+        
+        .toggle-logs-btn {
+            background-color: transparent; border: 1px solid var(--border-color); 
+            color: var(--accent-blue); padding: 8px 15px; border-radius: 6px; 
+            cursor: pointer; margin-top: 5px; font-size: 0.85rem; 
+            font-family: 'Avo', sans-serif; transition: 0.3s;
+            display: inline-flex; align-items: center; gap: 8px;
+        }
+        .toggle-logs-btn:hover { 
+            background-color: rgba(59, 130, 246, 0.1); border-color: var(--accent-blue); 
+        }
+        
+        .result-item {
+            background-color: var(--bg-input); border: 1px solid var(--border-color);
+            border-radius: 12px; padding: 25px; margin-top: 25px; text-align: left;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+        }
+        .result-section-title {
+            font-size: 1.05rem; color: var(--text-main); margin: 20px 0 10px 0;
+            padding-bottom: 5px; border-bottom: 1px dashed var(--border-color);
+        }
+        .result-section-title i { color: var(--accent-blue); margin-right: 8px; }
+    </style>
 </head>
 <body>
     <header class="header">
@@ -28,72 +63,213 @@
     </header>
 
     <main class="main-content" style="flex: 1; display:flex; flex-direction:column; justify-content:center;">
-        <div class="container" style="text-align: center; margin-top: 40px;">
+        <div class="container" style="text-align: center; margin-top: 40px; margin-bottom: 40px;">
             <h1 class="hero-title" style="font-size: 2.5rem;">Cổng Tra Cứu <span>Điện Tử</span></h1>
             <p class="hero-subtitle">Nhập số điện thoại hoặc mã phiếu bảo hành của bạn để kiểm tra thời hạn và lịch sử dịch vụ.</p>
             
             <div class="search-section">
                 <div class="search-box">
-                    <input type="text" id="keyword" class="search-input" placeholder="Ví dụ: 09xxxx hoặc SBRB26..." required>
-                    <button id="searchBtn" class="search-button"><i class="fas fa-search"></i> Kiểm tra</button>
+                    <input type="text" id="searchInput" class="search-input" placeholder="Ví dụ: 09xxxx hoặc SBRB26..." required>
+                    <button id="searchButton" class="search-button"><i class="fas fa-search"></i> Kiểm tra ngay</button>
                 </div>
                 
-                <div id="resultContainer" class="result-card">
-                    <div class="result-header">
-                        <h4><i class="fas fa-user-circle"></i> <span id="r-name">Đang tải...</span></h4>
-                        <span id="r-status" class="status-badge status-active">CÒN HẠN</span>
+                <div id="resultContainer" style="margin-top: 10px;">
                     </div>
-                    <div class="result-details">
-                        <p><strong>Mã bảo hành:</strong> <span class="service-code" id="r-code">SB--</span></p>
-                        <p><strong>Dịch vụ/Sản phẩm:</strong> <span id="r-service">--</span></p>
-                        <p><strong>Ngày kích hoạt:</strong> <span style="color:var(--accent-green)" id="r-start">--</span></p>
-                        <p><strong>Ngày hết hạn:</strong> <span style="color:var(--accent-red)" id="r-end">--</span></p>
-                    </div>
-                </div>
                 
-                <div id="errorContainer" style="display: none; color: var(--accent-red); margin-top: 20px; font-weight: bold;">
-                    <i class="fas fa-exclamation-triangle"></i> Không tìm thấy dữ liệu hoặc mã không hợp lệ!
+                <div id="errorContainer" style="display: none; color: var(--accent-red); margin-top: 20px; font-weight: bold; text-align: center;">
+                    <i class="fas fa-exclamation-triangle"></i> <span id="errorText">Không tìm thấy dữ liệu!</span>
                 </div>
             </div>
         </div>
     </main>
 
     <footer class="footer">
-        <div class="container"><p>&copy; 2026 SUNBII Services.</p></div>
+        <div class="container">
+            <p>&copy; 2026 SUNBII Services. All rights reserved.</p>
+            <div class="social-links">
+                <a href="https://fb.com/damvanbang2006" target="_blank"><i class="fab fa-facebook-f"></i></a>
+                <a href="https://instargram.com/damvanbang2006" target="_blank"><i class="fab fa-instagram"></i></a>
+                <a href="https://zalo.me/0345696820" target="_blank"><i class="fas fa-comment-dots"></i></a>
+            </div>
+        </div>
     </footer>
 
     <script src="script.js"></script>
     <script>
-        // MÔ PHỎNG LOGIC HIỂN THỊ CỦA BẠN (Bạn hãy nối API thực tế vào đây)
-        document.getElementById('searchBtn').addEventListener('click', function() {
-            const keyword = document.getElementById('keyword').value.trim();
-            const btn = document.getElementById('searchBtn');
-            const resBox = document.getElementById('resultContainer');
-            const errBox = document.getElementById('errorContainer');
-            
-            if(!keyword) return alert('Vui lòng nhập thông tin!');
-            
-            btn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Xử lý...';
-            btn.disabled = true;
-            resBox.style.display = 'none';
-            errBox.style.display = 'none';
+        const searchButton = document.getElementById('searchButton');
+        const searchInput = document.getElementById('searchInput');
+        const resultDiv = document.getElementById('resultContainer');
+        const errorDiv = document.getElementById('errorContainer');
+        const errorText = document.getElementById('errorText');
+        
+        const handleSearch = async (method = null) => {
+            const keyword = searchInput.value.trim();
+            resultDiv.innerHTML = '';
+            errorDiv.style.display = 'none';
 
-            // GỌI API (Mình dùng setTimeout để giả lập độ trễ)
-            setTimeout(() => {
-                btn.innerHTML = '<i class="fas fa-search"></i> Kiểm tra';
-                btn.disabled = false;
+            if (keyword === '') {
+                errorText.innerText = 'Vui lòng nhập thông tin cần tra cứu.';
+                errorDiv.style.display = 'block';
+                return;
+            }
+
+            searchButton.disabled = true;
+            searchButton.innerHTML = '<i class="fas fa-spinner fa-spin"></i> ĐANG TÌM...';
+            
+            // GỌI API THỰC TẾ
+            let apiUrl = `https://api.sunbii.vn/api/servicesCheck?type=auto&keyword=${encodeURIComponent(keyword)}`;
+            if (method) {
+                apiUrl += `&Method=${encodeURIComponent(method)}`;
+            }
+
+            try {
+                const response = await fetch(apiUrl);
+                if (!response.ok) throw new Error(`HTTP error! status: ${response.status}`);
+                const data = await response.json();
                 
-                if(keyword.length >= 4) {
-                    document.getElementById('r-name').innerText = "Khách hàng SUNBII";
-                    document.getElementById('r-code').innerText = keyword.toUpperCase();
-                    document.getElementById('r-service').innerText = "Thay Cell Pin Lithium";
-                    document.getElementById('r-start').innerText = "01/05/2026";
-                    document.getElementById('r-end').innerText = "01/11/2026";
-                    resBox.style.display = 'block';
+                if (Array.isArray(data) && data.length > 0) {
+                    const resultsHtml = data.map((item, index) => {
+                        // Xử lý ngày tháng
+                        const parseVNDate = (dateStr) => {
+                            if (!dateStr || !dateStr.includes('/')) return null;
+                            const [day, month, year] = dateStr.split('/');
+                            return new Date(`${year}-${month}-${day}`);
+                        };
+                        const endDate = parseVNDate(item.endDate);
+                        
+                        let statusHtml = '<span class="status-badge" style="background-color: #6c757d; color: #fff;">Chưa rõ</span>';
+                        if (endDate) {
+                            const today = new Date(); today.setHours(0, 0, 0, 0);
+                            if (endDate >= today) {
+                                statusHtml = '<span class="status-badge status-active">CÒN HẠN</span>';
+                            } else {
+                                statusHtml = '<span class="status-badge status-expired">HẾT HẠN</span>';
+                            }
+                        }
+
+                        // Phân biệt logic cho mã mua bán (BY) và mã sửa chữa
+                        const isBuyGroup = item.processingError && item.processingError.toUpperCase() === 'NO';
+                        const detailHeader = isBuyGroup ? 'Tên sản phẩm:' : 'Lỗi xử lý:';
+                        const detailValue = isBuyGroup ? (item.productName || 'Không có') : (item.processingError || 'Không có');
+                        const treatmentPlanHtml = isBuyGroup 
+                            ? '' 
+                            : `<p><strong>Phương án xử lý:</strong> ${item.treatmentPlan || 'Không có'}</p>`;
+                        
+                        // Xử lý Lịch sử quét QR
+                        let qrHistoryHtml = '';
+                        const allLogs = item.log?.QRCheckHistory || [];
+                        const filteredLogs = allLogs.filter(log => log.method === 'QRCoder');
+
+                        if (filteredLogs.length > 0) {
+                            const visibleLogs = filteredLogs.slice(0, 5);
+                            const hiddenLogs = filteredLogs.slice(5);
+
+                            qrHistoryHtml = visibleLogs.map(log => `<li><strong>${log.time}</strong> - Via ${log.method}</li>`).join('');
+                            
+                            if (hiddenLogs.length > 0) {
+                                let hiddenList = hiddenLogs.map(log => `<li><strong>${log.time}</strong> - Via ${log.method}</li>`).join('');
+                                qrHistoryHtml += `<ul class="hidden-logs" id="hidden-logs-${index}">${hiddenList}</ul>`;
+                                qrHistoryHtml += `<button class="toggle-logs-btn" data-target="hidden-logs-${index}" data-state="collapsed">
+                                                    <i class="fas fa-caret-down"></i> Mở rộng (${hiddenLogs.length})
+                                                  </button>`;
+                            }
+                        } else {
+                             qrHistoryHtml = '<li>Chưa có dữ liệu quét tem QR.</li>';
+                        }
+
+                        // Render Template
+                        return `
+                            <div class="result-item">
+                                <div class="result-header">
+                                    <h4>Phiếu: <span class="service-code">${item.serviceCode || 'N/A'}</span></h4>
+                                    ${statusHtml}
+                                </div>
+                                
+                                <div class="result-details">
+                                    <h3 class="result-section-title"><i class="fas fa-user-check"></i> Thông Tin Khách Hàng</h3>
+                                    <p><strong>Khách hàng:</strong> ${item.Name || 'Không có'}</p>
+                                    <p><strong>Số điện thoại:</strong> ${item.contact?.phone || 'Không có'}</p>
+
+                                    <h3 class="result-section-title"><i class="fas fa-wrench"></i> Chi Tiết Dịch Vụ</h3>
+                                    <p><strong>${detailHeader}</strong> ${detailValue}</p>
+                                    ${treatmentPlanHtml} 
+                                    <p><strong>Ghi chú nội bộ:</strong> ${item.note || 'Không có'}</p>
+
+                                    <h3 class="result-section-title"><i class="fas fa-calendar-check"></i> Lịch Trình Bảo Hành</h3>
+                                    <p><strong>Ngày kích hoạt:</strong> <span style="color:var(--accent-green)">${item.date ? item.date.split('-').reverse().join('/') : 'N/A'}</span></p>
+                                    <p><strong>Ngày hết hạn:</strong> <span style="color:var(--accent-red)">${item.endDate || 'N/A'}</span></p>
+                                    <p><strong>Gói thời gian:</strong> ${item.duration || 'N/A'} tháng</p>
+
+                                    <h3 class="result-section-title"><i class="fas fa-qrcode"></i> Lịch Sử Quét Tem QR</h3>
+                                    <ul class="log-history">${qrHistoryHtml}</ul>
+                                </div>
+                            </div>
+                        `;
+                    }).join('');
+                    
+                    resultDiv.innerHTML = resultsHtml;
+                    addToggleListeners();
+
                 } else {
-                    errBox.style.display = 'block';
+                    errorText.innerText = 'Không tìm thấy thông tin bảo hành cho mã/SĐT bạn đã nhập.';
+                    errorDiv.style.display = 'block';
                 }
-            }, 1000);
+            } catch (error) {
+                errorText.innerText = `Có lỗi khi kết nối máy chủ (Lỗi: ${error.message}).`;
+                errorDiv.style.display = 'block';
+            } finally {
+                searchButton.disabled = false;
+                searchButton.innerHTML = '<i class="fas fa-search"></i> Kiểm tra ngay';
+            }
+        };
+
+        // Hàm mở rộng/thu gọn lịch sử
+        function addToggleListeners() {
+            const resultDiv = document.getElementById('resultContainer');
+            resultDiv.removeEventListener('click', handleToggleClick);
+            resultDiv.addEventListener('click', handleToggleClick);
+        }
+
+        const handleToggleClick = function(event) {
+            const button = event.target.closest('.toggle-logs-btn');
+            if (button) {
+                const targetId = button.getAttribute('data-target');
+                const hiddenLogs = document.getElementById(targetId);
+                const currentState = button.getAttribute('data-state');
+
+                if (hiddenLogs) {
+                    if (currentState === 'collapsed') {
+                        hiddenLogs.style.display = 'block';
+                        button.setAttribute('data-state', 'expanded');
+                        button.innerHTML = '<i class="fas fa-caret-up"></i> Thu gọn';
+                    } else {
+                        hiddenLogs.style.display = 'none';
+                        button.setAttribute('data-state', 'collapsed');
+                        const hiddenCount = hiddenLogs.children.length;
+                        button.innerHTML = `<i class="fas fa-caret-down"></i> Mở rộng (${hiddenCount})`;
+                    }
+                }
+            }
+        };
+
+        // Bắt sự kiện
+        searchButton.addEventListener('click', () => handleSearch());
+        searchInput.addEventListener('keyup', (event) => {
+            if (event.key === 'Enter') handleSearch();
+        });
+        
+        // Tự động tìm nếu quét từ QR Code truyền param trên URL
+        document.addEventListener('DOMContentLoaded', () => {
+            const params = new URLSearchParams(window.location.search);
+            const keywordFromUrl = params.get('keyword');
+            let methodFromUrl = params.get('method');
+            if(methodFromUrl != 'QRCoder'){
+                methodFromUrl = params.get('Method');
+            }
+            if (keywordFromUrl && methodFromUrl === 'QRCoder') {
+                searchInput.value = keywordFromUrl;
+                handleSearch(methodFromUrl);
+            }
         });
     </script>
 </body>
