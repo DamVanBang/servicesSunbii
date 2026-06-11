@@ -3,72 +3,37 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  
-  <!-- Title hiển thị trên tab & kết quả Google -->
   <title>SUNBII Services - Dịch Vụ Chuyên Nghiệp</title>
-
-  <!-- Mô tả ngắn gọn nội dung trang (Google dùng để hiển thị snippet) -->
-  <meta name="description" content="SUNBII Services cung cấp dịch vụ chuyên nghiệp: sửa chữa, bảo hành, bảo trì thiết bị. Uy tín - Nhanh chóng - Giá hợp lý.">
-
-  <!-- Từ khóa (không còn quá quan trọng, nhưng vẫn có thể dùng) -->
-  <meta name="keywords" content="SUNBII Services, dịch vụ sửa chữa, bảo hành, bảo trì, dịch vụ chuyên nghiệp, lỗi 24135, pin b1">
-
-  <!-- Tác giả (optional, giúp xác định nguồn) -->
-  <meta name="author" content="Đàm Văn Bằng">
-
-  <!-- Cho phép Google index và theo dõi link -->
-  <meta name="robots" content="index, follow">
-
-  <!-- Open Graph cho chia sẻ Facebook / Zalo -->
-  <meta property="og:title" content="SUNBII Services - Dịch Vụ Chuyên Nghiệp">
-  <meta property="og:description" content="Dịch vụ sửa chữa, bảo hành, bảo trì thiết bị nhanh chóng và uy tín.">
-  <meta property="og:image" content="https://sunbii.vn/images/thumbnail.jpg">
-  <!--<meta property="og:url" content="https://yourdomain.com/">-->
-  <meta property="og:type" content="website">
-
-  <!-- Twitter Card (khi chia sẻ trên Twitter/X) -->
-  <meta name="twitter:card" content="summary_large_image">
-  <meta name="twitter:title" content="SUNBII Services - Dịch Vụ Chuyên Nghiệp">
-  <meta name="twitter:description" content="Dịch vụ sửa chữa, bảo hành, bảo trì thiết bị nhanh chóng và uy tín.">
-  <!--<meta name="twitter:image" content="https://yourdomain.com/images/thumbnail.jpg">-->
-
-  <!-- Link CSS -->
+  <meta name=\"description\" content=\"SUNBII Services cung cấp dịch vụ sửa chữa, bảo hành thiết bị. Uy tín - Nhanh chóng - Giá hợp lý.\">
   <link rel="stylesheet" href="style.css">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-
-
 </head>
-
 <body>
 
- <header class="header">
-    <div class="container">
-        <div class="logo">
-            <a href="index.html">SUNBII <span>Services</span></a>
-        </div>
-        <nav class="main-nav">
-            <ul>
-                    <li><a href="index.html">Trang Chủ</a></li>
-                    <li><a href="tra-cuu.html" class="active">Tra Cứu Bảo Hành</a></li>
-                    <li><a href="dich-vu.html">Dịch Vụ</a></li>
-                    <li><a href="#">Liên Hệ</a></li>
+    <header class="header">
+        <div class="container">
+            <div class="logo">
+                <a href="index.html"><i class="fas fa-shield-halved"></i> SUNBII<span>SERVICES</span></a>
+            </div>
+            <nav class="main-nav">
+                <ul>
+                    <li><a href="index.html" class="active">Trang Chủ</a></li>
+                    <li><a href="tra-cuu.html">Tra Cứu Bảo Hành</a></li>
+                    <li><a href="dich-vu.html">Bảng Giá Dịch Vụ</a></li>
                 </ul>
-        </nav>
-        
-        <button class="mobile-menu-button" aria-label="Mở menu">
-            <i class="fas fa-bars"></i>
-        </button>
+            </nav>
+            <button class="mobile-menu-button" aria-label="Mở menu"><i class="fas fa-bars"></i></button>
         </div>
-</header>
+    </header>
 
-
-    <main class="main-content">
+    <main>
         <section class="hero">
             <div class="container">
-                <div class="hero-content">
-                    <h1>Dịch Vụ Chuyên Nghiệp, Hỗ Trợ Tận Tâm</h1>
-                    <p>Chúng tôi cung cấp các giải pháp và dịch vụ sửa chữa hàng đầu, đảm bảo sự hài lòng cho mọi khách hàng.</p>
-                    <a href="tra-cuu.html" class="hero-button">Kiểm tra bảo hành ngay <i class="fas fa-arrow-right"></i></a>
+                <h1 class="hero-title">Giải Pháp Công Nghệ <span>Toàn Diện</span></h1>
+                <p class="hero-subtitle">Trung tâm dịch vụ sửa chữa, bảo dưỡng và nâng cấp thiết bị phần cứng chuyên nghiệp của Hệ sinh thái DVB Developer.</p>
+                <div class="hero-buttons">
+                    <a href="dich-vu.html" class="btn btn-primary"><i class="fas fa-list-ul"></i> Xem Dịch Vụ</a>
+                    <a href="tra-cuu.html" class="btn btn-secondary"><i class="fas fa-search"></i> Tra Cứu Bảo Hành</a>
                 </div>
             </div>
         </section>
@@ -76,19 +41,19 @@
         <section class="features">
             <div class="container">
                 <div class="feature-item">
-                    <i class="fas fa-tools"></i>
-                    <h3>Sửa Chữa Nhanh Chóng</h3>
-                    <p>Đội ngũ kỹ thuật viên lành nghề, xử lý sự cố trong thời gian ngắn nhất.</p>
+                    <i class="fas fa-microchip"></i>
+                    <h3>Xử Lý Chuyên Sâu</h3>
+                    <p>Sửa chữa bo mạch, độ chế pin Lithium, phân tích dữ liệu phần cứng chuyên nghiệp.</p>
                 </div>
                 <div class="feature-item">
                     <i class="fas fa-shield-alt"></i>
-                    <h3>Linh Kiện Chính Hãng</h3>
-                    <p>Cam kết sử dụng linh kiện có nguồn gốc rõ ràng, chất lượng đảm bảo.</p>
+                    <h3>Bảo Hành Điện Tử</h3>
+                    <p>Mọi dịch vụ đều được lưu trữ trên hệ thống điện tử. Tra cứu dễ dàng, minh bạch.</p>
                 </div>
                 <div class="feature-item">
                     <i class="fas fa-headset"></i>
-                    <h3>Hỗ Trợ 24/7</h3>
-                    <p>Luôn sẵn sàng tư vấn và giải đáp mọi thắc mắc của khách hàng.</p>
+                    <h3>Hỗ Trợ Kỹ Thuật 24/7</h3>
+                    <p>Luôn sẵn sàng tư vấn giải pháp tối ưu chi phí và hiệu năng cho thiết bị của bạn.</p>
                 </div>
             </div>
         </section>
@@ -96,14 +61,15 @@
 
     <footer class="footer">
         <div class="container">
-            <p>&copy; 2023 SUNBII Services. All rights reserved.</p>
+            <p>&copy; 2026 SUNBII Services. All rights reserved.</p>
             <div class="social-links">
-                <a href="https://fb.com/damvanbang2006"><i class="fab fa-facebook-f"></i></a>
-                <a href="https://instargram.com/damvanbang2006"><i class="fab fa-instagram"></i></a>
-                <a href="#"><i class="fab fa-youtube"></i></a>
+                <a href="https://fb.com/damvanbang2006" target="_blank"><i class="fab fa-facebook-f"></i></a>
+                <a href="https://instargram.com/damvanbang2006" target="_blank"><i class="fab fa-instagram"></i></a>
+                <a href="https://zalo.me/0345696820" target="_blank"><i class=\"fas fa-comment-dots\"></i></a>
             </div>
         </div>
     </footer>
-  <script src="script.js"></script>
+
+    <script src="script.js"></script>
 </body>
 </html>
