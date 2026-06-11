@@ -4,6 +4,9 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Tra Cứu Bảo Hành - SUNBII Services</title>
+    <meta name="description" content="Tra cứu thông tin bảo hành dịch vụ của SUNBII Services nhanh chóng và chính xác.">
+    <meta name="author" content="Đàm Văn Bằng">
+    <link rel="icon" href="favicon.ico">
     <link rel="stylesheet" href="style.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 </head>
@@ -75,12 +78,11 @@
             resBox.style.display = 'none';
             errBox.style.display = 'none';
 
-            // GỌI API CỦA BẠN (Mình dùng setTimeout để giả lập độ trễ)
+            // GỌI API (Mình dùng setTimeout để giả lập độ trễ)
             setTimeout(() => {
                 btn.innerHTML = '<i class="fas fa-search"></i> Kiểm tra';
                 btn.disabled = false;
                 
-                // Giả lập tìm thấy
                 if(keyword.length >= 4) {
                     document.getElementById('r-name').innerText = "Khách hàng SUNBII";
                     document.getElementById('r-code').innerText = keyword.toUpperCase();
