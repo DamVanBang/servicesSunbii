@@ -12,7 +12,6 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 
     <style>
-        /* Bổ sung CSS cho phần Lịch sử QR hiển thị trên Dark Theme */
         .log-history { list-style: none; padding: 0; margin-top: 10px; }
         .log-history li {
             background-color: var(--bg-card); padding: 10px 15px;
@@ -43,6 +42,23 @@
             padding-bottom: 5px; border-bottom: 1px dashed var(--border-color);
         }
         .result-section-title i { color: var(--accent-blue); margin-right: 8px; }
+
+        /* Partner store badge */
+        .partner-badge {
+            display: inline-flex; align-items: center; gap: 6px;
+            background: linear-gradient(135deg, #f59e0b, #d97706);
+            color: #fff; padding: 4px 12px; border-radius: 20px;
+            font-size: 0.8rem; font-weight: bold; margin-left: 10px;
+        }
+        .partner-section {
+            background: linear-gradient(135deg, rgba(245, 158, 11, 0.1), rgba(217, 119, 6, 0.05));
+            border: 1px solid rgba(245, 158, 11, 0.3); border-radius: 10px;
+            padding: 15px; margin-top: 10px;
+        }
+        .partner-section h4 {
+            color: #f59e0b; margin: 0 0 10px 0; font-size: 0.95rem;
+            display: flex; align-items: center; gap: 8px;
+        }
     </style>
 </head>
 <body>
@@ -121,7 +137,6 @@
             searchButton.disabled = true;
             searchButton.innerHTML = '<i class="fas fa-spinner fa-spin"></i> ĐANG TÌM...';
 
-            // GỌI API THỰC TẾ
             let apiUrl = `https://api.sunbii.vn/api/servicesCheck?type=auto&keyword=${encodeURIComponent(keyword)}`;
             if (method) {
                 apiUrl += `&Method=${encodeURIComponent(method)}`;
@@ -134,7 +149,6 @@
 
                 if (Array.isArray(data) && data.length > 0) {
                     const resultsHtml = data.map((item, index) => {
-                        // Xử lý ngày tháng
                         const parseVNDate = (dateStr) => {
                             if (!dateStr || !dateStr.includes('/')) return null;
                             const [day, month, year] = dateStr.split('/');
@@ -152,7 +166,6 @@
                             }
                         }
 
-                        // Phân biệt logic cho mã mua bán (BY) và mã sửa chữa
                         const isBuyGroup = item.processingError && item.processingError.toUpperCase() === 'NO';
                         const detailHeader = isBuyGroup ? 'Tên sản phẩm:' : 'Lỗi xử lý:';
                         const detailValue = isBuyGroup ? (item.productName || 'Không có') : (item.processingError || 'Không có');
@@ -160,7 +173,25 @@
                             ? ''
                             : `<p><strong>Phương án xử lý:</strong> ${item.treatmentPlan || 'Không có'}</p>`;
 
-                        // Xử lý Lịch sử quét QR
+                        // Xác định loại bảo hành
+                        const isPartner = item.warrantyType === 'partner';
+                        const partnerBadge = isPartner
+                            ? '<span class="partner-badge"><i class="fas fa-store"></i> ĐỐI TÁC</span>'
+                            : '';
+
+                        // Phần thông tin cửa hàng đối tác
+                        let partnerSectionHtml = '';
+                        if (isPartner && item.partnerName) {
+                            partnerSectionHtml = `
+                                <div class="partner-section">
+                                    <h4><i class="fas fa-store"></i> THÔNG TIN CỬA HÀNG ĐỐI TÁC</h4>
+                                    <p><strong>Tên cửa hàng:</strong> ${item.partnerName}</p>
+                                    <p><strong>Địa chỉ:</strong> ${item.contact?.address || 'Không có'}</p>
+                                    <p><strong>SĐT liên hệ:</strong> ${item.contact?.phone || 'Không có'}</p>
+                                </div>
+                            `;
+                        }
+
                         let qrHistoryHtml = '';
                         const allLogs = item.log?.QRCheckHistory || [];
                         const filteredLogs = allLogs.filter(log => log.method === 'QRCoder');
@@ -182,11 +213,10 @@
                              qrHistoryHtml = '<li>Chưa có dữ liệu quét tem QR.</li>';
                         }
 
-                        // Render Template
                         return `
                             <div class="result-item">
                                 <div class="result-header">
-                                    <h4>Phiếu: <span class="service-code">${item.serviceCode || 'N/A'}</span></h4>
+                                    <h4>Phiếu: <span class="service-code">${item.serviceCode || 'N/A'}</span>${partnerBadge}</h4>
                                     ${statusHtml}
                                 </div>
 
@@ -194,6 +224,8 @@
                                     <h3 class="result-section-title"><i class="fas fa-user-check"></i> Thông Tin Khách Hàng</h3>
                                     <p><strong>Khách hàng:</strong> ${item.Name || 'Không có'}</p>
                                     <p><strong>Số điện thoại:</strong> ${item.contact?.phone || 'Không có'}</p>
+
+                                    ${partnerSectionHtml}
 
                                     <h3 class="result-section-title"><i class="fas fa-wrench"></i> Chi Tiết Dịch Vụ</h3>
                                     <p><strong>${detailHeader}</strong> ${detailValue}</p>
@@ -228,7 +260,6 @@
             }
         };
 
-        // Hàm mở rộng/thu gọn lịch sử
         function addToggleListeners() {
             const resultDiv = document.getElementById('resultContainer');
             resultDiv.removeEventListener('click', handleToggleClick);
@@ -257,13 +288,11 @@
             }
         };
 
-        // Bắt sự kiện
         searchButton.addEventListener('click', () => handleSearch());
         searchInput.addEventListener('keyup', (event) => {
             if (event.key === 'Enter') handleSearch();
         });
 
-        // Tự động tìm nếu quét từ QR Code truyền param trên URL
         document.addEventListener('DOMContentLoaded', () => {
             const params = new URLSearchParams(window.location.search);
             const keywordFromUrl = params.get('keyword');
