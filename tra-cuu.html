@@ -34,30 +34,42 @@
 
         .result-item {
             background-color: var(--bg-input); border: 1px solid var(--border-color);
-            border-radius: 12px; padding: 25px; margin-top: 25px; text-align: left;
+            border-radius: 12px; padding: 20px; margin-top: 25px; text-align: left;
             box-shadow: 0 4px 6px rgba(0,0,0,0.1);
         }
+        .result-details { margin: 0; padding: 0; }
         .result-section-title {
-            font-size: 1.05rem; color: var(--text-main); margin: 20px 0 10px 0;
+            font-size: 1rem; color: var(--text-main); margin: 15px 0 8px 0;
             padding-bottom: 5px; border-bottom: 1px dashed var(--border-color);
         }
+        .result-section-title:first-child { margin-top: 0; }
         .result-section-title i { color: var(--accent-blue); margin-right: 8px; }
+        .result-details p { margin: 5px 0; line-height: 1.5; }
 
-        /* Partner store badge */
         .partner-badge {
             display: inline-flex; align-items: center; gap: 6px;
             background: linear-gradient(135deg, #f59e0b, #d97706);
             color: #fff; padding: 4px 12px; border-radius: 20px;
-            font-size: 0.8rem; font-weight: bold; margin-left: 10px;
+            font-size: 0.75rem; font-weight: bold; margin-left: 8px;
+            vertical-align: middle;
         }
         .partner-section {
             background: linear-gradient(135deg, rgba(245, 158, 11, 0.1), rgba(217, 119, 6, 0.05));
             border: 1px solid rgba(245, 158, 11, 0.3); border-radius: 10px;
-            padding: 15px; margin-top: 10px;
+            padding: 12px 15px; margin-bottom: 10px;
         }
         .partner-section h4 {
-            color: #f59e0b; margin: 0 0 10px 0; font-size: 0.95rem;
+            color: #f59e0b; margin: 0 0 8px 0; font-size: 0.9rem;
             display: flex; align-items: center; gap: 8px;
+        }
+        .partner-section p { margin: 4px 0; font-size: 0.9rem; }
+
+        /* Responsive mobile */
+        @media (max-width: 576px) {
+            .result-item { padding: 15px; margin-top: 15px; border-radius: 10px; }
+            .result-section-title { font-size: 0.9rem; margin: 12px 0 6px 0; }
+            .result-details p { font-size: 0.9rem; }
+            .partner-section { padding: 10px 12px; }
         }
     </style>
 </head>
@@ -221,11 +233,11 @@
                                 </div>
 
                                 <div class="result-details">
+                                    ${partnerSectionHtml}
+
                                     <h3 class="result-section-title"><i class="fas fa-user-check"></i> Thông Tin Khách Hàng</h3>
                                     <p><strong>Khách hàng:</strong> ${item.Name || 'Không có'}</p>
                                     <p><strong>Số điện thoại:</strong> ${item.contact?.phone || 'Không có'}</p>
-
-                                    ${partnerSectionHtml}
 
                                     <h3 class="result-section-title"><i class="fas fa-wrench"></i> Chi Tiết Dịch Vụ</h3>
                                     <p><strong>${detailHeader}</strong> ${detailValue}</p>
