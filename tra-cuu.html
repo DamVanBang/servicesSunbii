@@ -7,32 +7,32 @@
     <meta name="description" content="Tra cứu thông tin bảo hành dịch vụ của SUNBII Services nhanh chóng và chính xác.">
     <meta name="author" content="Đàm Văn Bằng">
     <link rel="icon" href="favicon.ico">
-    
+
     <link rel="stylesheet" href="style.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    
+
     <style>
         /* Bổ sung CSS cho phần Lịch sử QR hiển thị trên Dark Theme */
         .log-history { list-style: none; padding: 0; margin-top: 10px; }
-        .log-history li { 
-            background-color: var(--bg-card); padding: 10px 15px; 
-            border-radius: 8px; margin-bottom: 8px; font-size: 0.9rem; 
-            border: 1px solid var(--border-color); color: var(--text-muted); 
+        .log-history li {
+            background-color: var(--bg-card); padding: 10px 15px;
+            border-radius: 8px; margin-bottom: 8px; font-size: 0.9rem;
+            border: 1px solid var(--border-color); color: var(--text-muted);
         }
         .log-history li strong { color: var(--text-main); }
         .hidden-logs { display: none; margin-top: 8px; padding: 0; list-style: none;}
-        
+
         .toggle-logs-btn {
-            background-color: transparent; border: 1px solid var(--border-color); 
-            color: var(--accent-blue); padding: 8px 15px; border-radius: 6px; 
-            cursor: pointer; margin-top: 5px; font-size: 0.85rem; 
+            background-color: transparent; border: 1px solid var(--border-color);
+            color: var(--accent-blue); padding: 8px 15px; border-radius: 6px;
+            cursor: pointer; margin-top: 5px; font-size: 0.85rem;
             font-family: 'Avo', sans-serif; transition: 0.3s;
             display: inline-flex; align-items: center; gap: 8px;
         }
-        .toggle-logs-btn:hover { 
-            background-color: rgba(59, 130, 246, 0.1); border-color: var(--accent-blue); 
+        .toggle-logs-btn:hover {
+            background-color: rgba(59, 130, 246, 0.1); border-color: var(--accent-blue);
         }
-        
+
         .result-item {
             background-color: var(--bg-input); border: 1px solid var(--border-color);
             border-radius: 12px; padding: 25px; margin-top: 25px; text-align: left;
@@ -66,16 +66,20 @@
         <div class="container" style="text-align: center; margin-top: 40px; margin-bottom: 40px;">
             <h1 class="hero-title" style="font-size: 2.5rem;">Cổng Tra Cứu <span>Điện Tử</span></h1>
             <p class="hero-subtitle">Nhập số điện thoại hoặc mã phiếu bảo hành của bạn để kiểm tra thời hạn và lịch sử dịch vụ.</p>
-            
+
+            <div class="policy-link-wrapper" style="margin-bottom: 25px;">
+                <a href="chinh-sach.html" class="btn btn-highlight"><i class="fas fa-shield-halved"></i> Xem Chính Sách Bảo Hành Pin B1</a>
+            </div>
+
             <div class="search-section">
                 <div class="search-box">
                     <input type="text" id="searchInput" class="search-input" placeholder="Ví dụ: 09xxxx hoặc SBRB26..." required>
                     <button id="searchButton" class="search-button"><i class="fas fa-search"></i> Kiểm tra ngay</button>
                 </div>
-                
+
                 <div id="resultContainer" style="margin-top: 10px;">
-                    </div>
-                
+                </div>
+
                 <div id="errorContainer" style="display: none; color: var(--accent-red); margin-top: 20px; font-weight: bold; text-align: center;">
                     <i class="fas fa-exclamation-triangle"></i> <span id="errorText">Không tìm thấy dữ liệu!</span>
                 </div>
@@ -101,7 +105,7 @@
         const resultDiv = document.getElementById('resultContainer');
         const errorDiv = document.getElementById('errorContainer');
         const errorText = document.getElementById('errorText');
-        
+
         const handleSearch = async (method = null) => {
             const keyword = searchInput.value.trim();
             resultDiv.innerHTML = '';
@@ -115,7 +119,7 @@
 
             searchButton.disabled = true;
             searchButton.innerHTML = '<i class="fas fa-spinner fa-spin"></i> ĐANG TÌM...';
-            
+
             // GỌI API THỰC TẾ
             let apiUrl = `https://api.sunbii.vn/api/servicesCheck?type=auto&keyword=${encodeURIComponent(keyword)}`;
             if (method) {
@@ -126,7 +130,7 @@
                 const response = await fetch(apiUrl);
                 if (!response.ok) throw new Error(`HTTP error! status: ${response.status}`);
                 const data = await response.json();
-                
+
                 if (Array.isArray(data) && data.length > 0) {
                     const resultsHtml = data.map((item, index) => {
                         // Xử lý ngày tháng
@@ -136,7 +140,7 @@
                             return new Date(`${year}-${month}-${day}`);
                         };
                         const endDate = parseVNDate(item.endDate);
-                        
+
                         let statusHtml = '<span class="status-badge" style="background-color: #6c757d; color: #fff;">Chưa rõ</span>';
                         if (endDate) {
                             const today = new Date(); today.setHours(0, 0, 0, 0);
@@ -151,10 +155,10 @@
                         const isBuyGroup = item.processingError && item.processingError.toUpperCase() === 'NO';
                         const detailHeader = isBuyGroup ? 'Tên sản phẩm:' : 'Lỗi xử lý:';
                         const detailValue = isBuyGroup ? (item.productName || 'Không có') : (item.processingError || 'Không có');
-                        const treatmentPlanHtml = isBuyGroup 
-                            ? '' 
+                        const treatmentPlanHtml = isBuyGroup
+                            ? ''
                             : `<p><strong>Phương án xử lý:</strong> ${item.treatmentPlan || 'Không có'}</p>`;
-                        
+
                         // Xử lý Lịch sử quét QR
                         let qrHistoryHtml = '';
                         const allLogs = item.log?.QRCheckHistory || [];
@@ -165,7 +169,7 @@
                             const hiddenLogs = filteredLogs.slice(5);
 
                             qrHistoryHtml = visibleLogs.map(log => `<li><strong>${log.time}</strong> - Via ${log.method}</li>`).join('');
-                            
+
                             if (hiddenLogs.length > 0) {
                                 let hiddenList = hiddenLogs.map(log => `<li><strong>${log.time}</strong> - Via ${log.method}</li>`).join('');
                                 qrHistoryHtml += `<ul class="hidden-logs" id="hidden-logs-${index}">${hiddenList}</ul>`;
@@ -184,7 +188,7 @@
                                     <h4>Phiếu: <span class="service-code">${item.serviceCode || 'N/A'}</span></h4>
                                     ${statusHtml}
                                 </div>
-                                
+
                                 <div class="result-details">
                                     <h3 class="result-section-title"><i class="fas fa-user-check"></i> Thông Tin Khách Hàng</h3>
                                     <p><strong>Khách hàng:</strong> ${item.Name || 'Không có'}</p>
@@ -192,7 +196,7 @@
 
                                     <h3 class="result-section-title"><i class="fas fa-wrench"></i> Chi Tiết Dịch Vụ</h3>
                                     <p><strong>${detailHeader}</strong> ${detailValue}</p>
-                                    ${treatmentPlanHtml} 
+                                    ${treatmentPlanHtml}
                                     <p><strong>Ghi chú nội bộ:</strong> ${item.note || 'Không có'}</p>
 
                                     <h3 class="result-section-title"><i class="fas fa-calendar-check"></i> Lịch Trình Bảo Hành</h3>
@@ -206,7 +210,7 @@
                             </div>
                         `;
                     }).join('');
-                    
+
                     resultDiv.innerHTML = resultsHtml;
                     addToggleListeners();
 
@@ -257,7 +261,7 @@
         searchInput.addEventListener('keyup', (event) => {
             if (event.key === 'Enter') handleSearch();
         });
-        
+
         // Tự động tìm nếu quét từ QR Code truyền param trên URL
         document.addEventListener('DOMContentLoaded', () => {
             const params = new URLSearchParams(window.location.search);

@@ -1,8 +1,8 @@
 /* === BẢNG MÀU ĐỒNG BỘ DARK DASHBOARD SUNBII === */
 :root {
-    --bg-dark: #0f172a;       
-    --bg-card: #1e293b;       
-    --bg-input: #0b1120;      
+    --bg-dark: #0f172a;
+    --bg-card: #1e293b;
+    --bg-input: #0b1120;
     --text-main: #f8fafc;
     --text-muted: #94a3b8;
     --accent-blue: #3b82f6;
@@ -82,6 +82,27 @@ body {
     border: 1px solid var(--border-color);
 }
 .btn-secondary:hover { border-color: var(--accent-yellow); color: var(--accent-yellow); transform: translateY(-3px);}
+
+/* === BUTTON HIGHLIGHT - CHÍNH SÁCH BẢO HÀNH === */
+.btn-highlight {
+    background: linear-gradient(135deg, #f59e0b, #ef4444);
+    color: #fff;
+    border: 2px solid #f59e0b;
+    font-size: 1.1rem;
+    padding: 14px 35px;
+    box-shadow: 0 4px 15px rgba(245, 158, 11, 0.4);
+    animation: pulse 2s infinite;
+}
+.btn-highlight:hover {
+    background: linear-gradient(135deg, #ef4444, #f59e0b);
+    transform: translateY(-3px);
+    box-shadow: 0 6px 20px rgba(239, 68, 68, 0.5);
+    color: #fff;
+}
+@keyframes pulse {
+    0%, 100% { box-shadow: 0 4px 15px rgba(245, 158, 11, 0.4); }
+    50% { box-shadow: 0 4px 25px rgba(245, 158, 11, 0.7); }
+}
 
 /* === FEATURES / SERVICES CARDS === */
 .features, .services-section { padding: 50px 0; }
@@ -168,4 +189,5 @@ body {
     .main-nav.active { display: block; }
     .main-nav ul { flex-direction: column; gap: 20px; }
     .hero-title { font-size: 2.2rem; }
+    .btn-highlight { font-size: 1rem; padding: 12px 25px; }
 }
