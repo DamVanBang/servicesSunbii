@@ -157,8 +157,24 @@ body {
     font-weight: bold;
 }
 .price-note { color: var(--text-muted); font-size: 0.9rem; }
+.hot-service-info {
+    margin-bottom: 20px;
+    padding: 15px;
+    background: rgba(0, 0, 0, 0.2);
+    border-radius: 8px;
+    border-left: 3px solid var(--accent-blue);
+}
+.hot-service-info p {
+    margin-bottom: 8px;
+    font-size: 0.95rem;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+.hot-service-info i { color: var(--accent-blue); width: 20px; text-align: center; }
 @media (max-width: 768px) {
     .hot-service-card { flex-direction: column; text-align: center; }
+    .hot-service-info { text-align: left; }
 }
 
 /* === FEATURES / SERVICES CARDS === */
