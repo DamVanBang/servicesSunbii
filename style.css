@@ -263,4 +263,5 @@ body {
     .main-nav ul { flex-direction: column; gap: 20px; }
     .hero-title { font-size: 2.2rem; }
     .btn-highlight { font-size: 1rem; padding: 12px 25px; }
+    .search-section { padding: 20px; margin: 20px auto; }
 }
