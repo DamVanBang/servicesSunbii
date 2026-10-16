@@ -3,77 +3,22 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="referrer" content="no-referrer">
     <title>Tra Cứu Bảo Hành - SUNBII</title>
     <meta name="description" content="Tra cứu thông tin bảo hành pin & phụ tùng xe điện tại SUNBII.">
     <meta name="author" content="Đàm Văn Bằng">
-    <link rel="icon" href="favicon.ico">
-
+    <link rel="icon" href="data:,">
     <link rel="stylesheet" href="style.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-
-    <style>
-        .log-history { list-style: none; padding: 0; margin-top: 10px; }
-        .log-history li {
-            background-color: var(--bg-card); padding: 10px 15px;
-            border-radius: 8px; margin-bottom: 8px; font-size: 0.9rem;
-            border: 1px solid var(--border-color); color: var(--text-muted);
-        }
-        .log-history li strong { color: var(--text-main); }
-        .hidden-logs { display: none; margin-top: 8px; padding: 0; list-style: none;}
-
-        .toggle-logs-btn {
-            background-color: transparent; border: 1px solid var(--border-color);
-            color: var(--accent-blue); padding: 8px 15px; border-radius: 6px;
-            cursor: pointer; margin-top: 5px; font-size: 0.85rem;
-            font-family: 'Avo', sans-serif; transition: 0.3s;
-            display: inline-flex; align-items: center; gap: 8px;
-        }
-        .toggle-logs-btn:hover {
-            background-color: rgba(59, 130, 246, 0.1); border-color: var(--accent-blue);
-        }
-
-        .result-item {
-            background-color: var(--bg-input); border: 1px solid var(--border-color);
-            border-radius: 12px; padding: 20px; margin-top: 25px; text-align: left;
-            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
-        }
-        .result-details { margin: 0; padding: 0; }
-        .result-section-title {
-            font-size: 1rem; color: var(--text-main); margin: 15px 0 8px 0;
-            padding-bottom: 5px; border-bottom: 1px dashed var(--border-color);
-        }
-        .result-section-title:first-child { margin-top: 0; }
-        .result-section-title i { color: var(--accent-blue); margin-right: 8px; }
-        .result-details p { margin: 5px 0; line-height: 1.5; }
-
-        .partner-badge {
-            display: inline-flex; align-items: center; gap: 6px;
-            background: linear-gradient(135deg, #f59e0b, #d97706);
-            color: #fff; padding: 4px 12px; border-radius: 20px;
-            font-size: 0.75rem; font-weight: bold; margin-left: 8px;
-            vertical-align: middle;
-        }
-        .partner-section {
-            background: linear-gradient(135deg, rgba(245, 158, 11, 0.1), rgba(217, 119, 6, 0.05));
-            border: 1px solid rgba(245, 158, 11, 0.3); border-radius: 10px;
-            padding: 12px 15px; margin-bottom: 10px;
-        }
-        .partner-section h4 {
-            color: #f59e0b; margin: 0 0 8px 0; font-size: 0.9rem;
-            display: flex; align-items: center; gap: 8px;
-        }
-        .partner-section p { margin: 4px 0; font-size: 0.9rem; }
-
-        /* Responsive mobile */
-        @media (max-width: 576px) {
-            .result-item { padding: 15px; margin-top: 15px; border-radius: 10px; }
-            .result-section-title { font-size: 0.9rem; margin: 12px 0 6px 0; }
-            .result-details p { font-size: 0.9rem; }
-            .partner-section { padding: 10px 12px; }
-        }
-    </style>
+    <link rel="stylesheet" href="lookup.css">
+    <script src="script.js" defer></script>
+    <script src="config.js" defer></script>
+    <script src="warranty-model.js" defer></script>
+    <script src="lookup.js" defer></script>
+    <script src="scan-model.js" defer></script>
+    <script src="scanner.js" defer></script>
 </head>
-<body>
+<body class="lookup-page">
     <header class="header">
         <div class="container">
             <div class="logo">
@@ -83,7 +28,7 @@
                 <ul>
                     <li><a href="index.html">Trang Chủ</a></li>
                     <li><a href="chinh-sach.html">Chính Sách</a></li>
-                    <li><a href="tra-cuu.html" class="active">Tra Cứu Bảo Hành</a></li>
+                    <li><a href="tra-cuu.html" class="active" aria-current="page">Tra Cứu Bảo Hành</a></li>
                     <li><a href="dich-vu.html">Bảng Giá Dịch Vụ</a></li>
                 </ul>
             </nav>
@@ -91,31 +36,67 @@
         </div>
     </header>
 
-    <main class="main-content" style="flex: 1; display:flex; flex-direction:column; justify-content:center;">
-        <div class="container" style="text-align: center; margin-top: 40px; margin-bottom: 40px;">
-            <h1 class="hero-title" style="font-size: 2.5rem;">Tra Cứu <span>Bảo Hành</span></h1>
-            <p class="hero-subtitle">Nhập mã phiếu bảo hành hoặc số điện thoại để kiểm tra thời hạn và lịch sử dịch vụ.</p>
-
-            <div class="policy-link-wrapper" style="margin-bottom: 25px;">
-                <a href="chinh-sach.html" class="btn btn-highlight"><i class="fas fa-shield-halved"></i> Xem Chính Sách Bảo Hành Pin B1</a>
+    <main id="main-content" class="lookup-main">
+        <div class="container lookup-container">
+            <div class="lookup-intro">
+                <h1>TRA CỨU <span>BẢO HÀNH</span></h1>
+                <p>Nhập mã phiếu bảo hành, S/N pin hoặc số điện thoại để kiểm tra thời hạn bảo hành.</p>
+                <a class="lookup-policy-button" href="chinh-sach.html"><i class="fas fa-shield-halved" aria-hidden="true"></i> XEM CHÍNH SÁCH BẢO HÀNH PIN B1</a>
             </div>
-
-            <div class="search-section">
-                <div class="search-box">
-                    <input type="text" id="searchInput" class="search-input" placeholder="Ví dụ: 09xxxx hoặc SBRB26..." required>
-                    <button id="searchButton" class="search-button"><i class="fas fa-search"></i> Kiểm tra ngay</button>
+            <form id="lookupForm" class="lookup-form" autocomplete="off">
+                <div class="lookup-fields">
+                    <div class="lookup-field lookup-type-field">
+                        <label for="searchType">Tra cứu theo</label>
+                        <select id="searchType" name="type">
+                            <option value="auto">Tự động</option>
+                            <option value="serviceCode">Mã bảo hành</option>
+                            <option value="serialNumber">Số serial (S/N)</option>
+                            <option value="phone">Số điện thoại</option>
+                            <option value="email">Email</option>
+                            <option value="QRCoder">Mã từ tem QR</option>
+                        </select>
+                    </div>
+                    <div class="lookup-field lookup-keyword">
+                        <label for="searchInput">Thông tin cần tra cứu</label>
+                        <div class="lookup-input-group">
+                            <input type="text" id="searchInput" name="keyword" required autocomplete="off" spellcheck="false" aria-describedby="lookupHint scanSummary" placeholder="Nhập mã, serial, số điện thoại hoặc email">
+                <button id="scanToggle" type="button" title="Quét QR / mã vạch" aria-label="Quét QR hoặc mã vạch để nhập thông tin" aria-haspopup="dialog" aria-expanded="false" aria-controls="scanPanel"><i class="fas fa-qrcode" aria-hidden="true"></i></button>
+                        </div>
+                    </div>
+                <button id="searchButton" type="submit" aria-label="Kiểm tra bảo hành ngay"><i class="fas fa-search" aria-hidden="true"></i> KIỂM TRA NGAY</button>
                 </div>
-
-                <div id="resultContainer" style="margin-top: 10px;">
+                <p id="lookupHint" class="lookup-muted">Nhập đầy đủ thông tin. Serial được đối chiếu chính xác, không phân biệt chữ hoa và chữ thường.</p>
+                <p class="lookup-privacy">Trang không lưu nội dung tra cứu hay kết quả vào bộ nhớ lưu trữ của website. Link QR có thể còn trong lịch sử trình duyệt; hãy giữ kín link. Thông tin được gửi đến máy chủ để đối chiếu; chỉ các trường được công khai mới hiển thị.</p>
+            <p id="scanSummary" class="lookup-muted" role="status" hidden></p>
+<dialog id="scanPanel" class="scan-panel" aria-labelledby="scanHeading" aria-describedby="scanHint" hidden>
+                <div class="scan-panel-heading">
+                    <h2 id="scanHeading">Quét mã để điền nhanh</h2>
+                    <button id="scanClose" type="button">Đóng</button>
                 </div>
-
-                <div id="errorContainer" style="display: none; color: var(--accent-red); margin-top: 20px; font-weight: bold; text-align: center;">
-                    <i class="fas fa-exclamation-triangle"></i> <span id="errorText">Không tìm thấy dữ liệu!</span>
+                <label for="scanMode">Loại tem cần quét</label>
+                <select id="scanMode" aria-describedby="scanHint">
+                    <option value="serialNumber">QR S/N pin — số serial</option>
+                    <option value="warranty">Tem bảo hành — mã vạch hoặc QR</option>
+                </select>
+                <p id="scanHint" class="lookup-muted">Chọn đúng loại tem. Sau khi đọc mã, kiểm tra ô tìm kiếm rồi nhấn Tra cứu. Ảnh và camera được xử lý trên thiết bị, không tải ảnh lên máy chủ.</p>
+                <div class="scan-actions">
+                    <button id="scanCamera" type="button" aria-controls="scanReader">Mở camera</button>
+                    <button id="scanChoose" type="button">Chọn ảnh</button>
+                    <button id="scanStop" type="button" disabled>Dừng quét</button>
                 </div>
+                <input id="scanFile" type="file" accept="image/*" aria-label="Ảnh tem QR hoặc mã vạch, tối đa 15 MB" hidden>
+                <p id="scanStatus" role="status" aria-live="polite" aria-atomic="true">Hỗ trợ QR và CODE128. Camera cần HTTPS hoặc localhost; ảnh tối đa 15 MB.</p>
+                <div id="scanReader" hidden></div>
+</dialog>
+            </form>
+            <div class="lookup-feedback" data-state="idle">
+                <p id="lookupStatus" role="status" aria-live="polite" aria-atomic="true">Sẵn sàng tra cứu.</p>
+                <button id="retryButton" type="button" hidden>Thử lại</button>
             </div>
+            <section id="resultContainer" class="lookup-results" aria-label="Kết quả tra cứu" aria-busy="false"></section>
+            <noscript><p class="lookup-empty">Vui lòng bật JavaScript để tra cứu bảo hành.</p></noscript>
         </div>
     </main>
-
     <footer class="footer">
         <div class="container">
             <p>&copy; 2026 SUNBII Services. All rights reserved.</p>
@@ -127,196 +108,5 @@
         </div>
     </footer>
 
-    <script src="script.js"></script>
-    <script>
-        const searchButton = document.getElementById('searchButton');
-        const searchInput = document.getElementById('searchInput');
-        const resultDiv = document.getElementById('resultContainer');
-        const errorDiv = document.getElementById('errorContainer');
-        const errorText = document.getElementById('errorText');
-
-        const handleSearch = async (method = null) => {
-            const keyword = searchInput.value.trim();
-            resultDiv.innerHTML = '';
-            errorDiv.style.display = 'none';
-
-            if (keyword === '') {
-                errorText.innerText = 'Vui lòng nhập thông tin cần tra cứu.';
-                errorDiv.style.display = 'block';
-                return;
-            }
-
-            searchButton.disabled = true;
-            searchButton.innerHTML = '<i class="fas fa-spinner fa-spin"></i> ĐANG TÌM...';
-
-            let apiUrl = `https://api.sunbii.vn/api/servicesCheck?type=auto&keyword=${encodeURIComponent(keyword)}`;
-            if (method) {
-                apiUrl += `&Method=${encodeURIComponent(method)}`;
-            }
-
-            try {
-                const response = await fetch(apiUrl);
-                if (!response.ok) throw new Error(`HTTP error! status: ${response.status}`);
-                const data = await response.json();
-
-                if (Array.isArray(data) && data.length > 0) {
-                    const resultsHtml = data.map((item, index) => {
-                        const parseVNDate = (dateStr) => {
-                            if (!dateStr || !dateStr.includes('/')) return null;
-                            const [day, month, year] = dateStr.split('/');
-                            return new Date(`${year}-${month}-${day}`);
-                        };
-                        const endDate = parseVNDate(item.endDate);
-
-                        let statusHtml = '<span class="status-badge" style="background-color: #6c757d; color: #fff;">Chưa rõ</span>';
-                        if (endDate) {
-                            const today = new Date(); today.setHours(0, 0, 0, 0);
-                            if (endDate >= today) {
-                                statusHtml = '<span class="status-badge status-active">CÒN HẠN</span>';
-                            } else {
-                                statusHtml = '<span class="status-badge status-expired">HẾT HẠN</span>';
-                            }
-                        }
-
-                        const isBuyGroup = item.processingError && item.processingError.toUpperCase() === 'NO';
-                        const detailHeader = isBuyGroup ? 'Tên sản phẩm:' : 'Lỗi xử lý:';
-                        const detailValue = isBuyGroup ? (item.productName || 'Không có') : (item.processingError || 'Không có');
-                        const treatmentPlanHtml = isBuyGroup
-                            ? ''
-                            : `<p><strong>Phương án xử lý:</strong> ${item.treatmentPlan || 'Không có'}</p>`;
-
-                        // Xác định loại bảo hành
-                        const isPartner = item.warrantyType === 'partner';
-                        const partnerBadge = isPartner
-                            ? '<span class="partner-badge"><i class="fas fa-store"></i> ĐỐI TÁC</span>'
-                            : '';
-
-                        // Phần thông tin cửa hàng đối tác
-                        let partnerSectionHtml = '';
-                        if (isPartner && item.partnerName) {
-                            partnerSectionHtml = `
-                                <div class="partner-section">
-                                    <h4><i class="fas fa-store"></i> THÔNG TIN CỬA HÀNG ĐỐI TÁC</h4>
-                                    <p><strong>Tên cửa hàng:</strong> ${item.partnerName}</p>
-                                    <p><strong>Địa chỉ:</strong> ${item.contact?.address || 'Không có'}</p>
-                                    <p><strong>SĐT liên hệ:</strong> ${item.contact?.phone || 'Không có'}</p>
-                                </div>
-                            `;
-                        }
-
-                        let qrHistoryHtml = '';
-                        const allLogs = item.log?.QRCheckHistory || [];
-                        const filteredLogs = allLogs.filter(log => log.method === 'QRCoder');
-
-                        if (filteredLogs.length > 0) {
-                            const visibleLogs = filteredLogs.slice(0, 5);
-                            const hiddenLogs = filteredLogs.slice(5);
-
-                            qrHistoryHtml = visibleLogs.map(log => `<li><strong>${log.time}</strong> - Via ${log.method}</li>`).join('');
-
-                            if (hiddenLogs.length > 0) {
-                                let hiddenList = hiddenLogs.map(log => `<li><strong>${log.time}</strong> - Via ${log.method}</li>`).join('');
-                                qrHistoryHtml += `<ul class="hidden-logs" id="hidden-logs-${index}">${hiddenList}</ul>`;
-                                qrHistoryHtml += `<button class="toggle-logs-btn" data-target="hidden-logs-${index}" data-state="collapsed">
-                                                    <i class="fas fa-caret-down"></i> Mở rộng (${hiddenLogs.length})
-                                                  </button>`;
-                            }
-                        } else {
-                             qrHistoryHtml = '<li>Chưa có dữ liệu quét tem QR.</li>';
-                        }
-
-                        return `
-                            <div class="result-item">
-                                <div class="result-header">
-                                    <h4>Phiếu: <span class="service-code">${item.serviceCode || 'N/A'}</span>${partnerBadge}</h4>
-                                    ${statusHtml}
-                                </div>
-
-                                <div class="result-details">
-                                    ${partnerSectionHtml}
-
-                                    <h3 class="result-section-title"><i class="fas fa-user-check"></i> Thông Tin Khách Hàng</h3>
-                                    <p><strong>Khách hàng:</strong> ${item.Name || 'Không có'}</p>
-                                    <p><strong>Số điện thoại:</strong> ${item.contact?.phone || 'Không có'}</p>
-
-                                    <h3 class="result-section-title"><i class="fas fa-wrench"></i> Chi Tiết Dịch Vụ</h3>
-                                    <p><strong>${detailHeader}</strong> ${detailValue}</p>
-                                    ${treatmentPlanHtml}
-                                    <p><strong>Ghi chú nội bộ:</strong> ${item.note || 'Không có'}</p>
-
-                                    <h3 class="result-section-title"><i class="fas fa-calendar-check"></i> Lịch Trình Bảo Hành</h3>
-                                    <p><strong>Ngày kích hoạt:</strong> <span style="color:var(--accent-green)">${item.date ? item.date.split('-').reverse().join('/') : 'N/A'}</span></p>
-                                    <p><strong>Ngày hết hạn:</strong> <span style="color:var(--accent-red)">${item.endDate || 'N/A'}</span></p>
-                                    <p><strong>Gói thời gian:</strong> ${item.duration || 'N/A'} tháng</p>
-
-                                    <h3 class="result-section-title"><i class="fas fa-qrcode"></i> Lịch Sử Quét Tem QR</h3>
-                                    <ul class="log-history">${qrHistoryHtml}</ul>
-                                </div>
-                            </div>
-                        `;
-                    }).join('');
-
-                    resultDiv.innerHTML = resultsHtml;
-                    addToggleListeners();
-
-                } else {
-                    errorText.innerText = 'Không tìm thấy thông tin bảo hành cho mã/SĐT bạn đã nhập.';
-                    errorDiv.style.display = 'block';
-                }
-            } catch (error) {
-                errorText.innerText = `Có lỗi khi kết nối máy chủ (Lỗi: ${error.message}).`;
-                errorDiv.style.display = 'block';
-            } finally {
-                searchButton.disabled = false;
-                searchButton.innerHTML = '<i class="fas fa-search"></i> Kiểm tra ngay';
-            }
-        };
-
-        function addToggleListeners() {
-            const resultDiv = document.getElementById('resultContainer');
-            resultDiv.removeEventListener('click', handleToggleClick);
-            resultDiv.addEventListener('click', handleToggleClick);
-        }
-
-        const handleToggleClick = function(event) {
-            const button = event.target.closest('.toggle-logs-btn');
-            if (button) {
-                const targetId = button.getAttribute('data-target');
-                const hiddenLogs = document.getElementById(targetId);
-                const currentState = button.getAttribute('data-state');
-
-                if (hiddenLogs) {
-                    if (currentState === 'collapsed') {
-                        hiddenLogs.style.display = 'block';
-                        button.setAttribute('data-state', 'expanded');
-                        button.innerHTML = '<i class="fas fa-caret-up"></i> Thu gọn';
-                    } else {
-                        hiddenLogs.style.display = 'none';
-                        button.setAttribute('data-state', 'collapsed');
-                        const hiddenCount = hiddenLogs.children.length;
-                        button.innerHTML = `<i class="fas fa-caret-down"></i> Mở rộng (${hiddenCount})`;
-                    }
-                }
-            }
-        };
-
-        searchButton.addEventListener('click', () => handleSearch());
-        searchInput.addEventListener('keyup', (event) => {
-            if (event.key === 'Enter') handleSearch();
-        });
-
-        document.addEventListener('DOMContentLoaded', () => {
-            const params = new URLSearchParams(window.location.search);
-            const keywordFromUrl = params.get('keyword');
-            let methodFromUrl = params.get('method');
-            if(methodFromUrl != 'QRCoder'){
-                methodFromUrl = params.get('Method');
-            }
-            if (keywordFromUrl && methodFromUrl === 'QRCoder') {
-                searchInput.value = keywordFromUrl;
-                handleSearch(methodFromUrl);
-            }
-        });
-    </script>
 </body>
 </html>
